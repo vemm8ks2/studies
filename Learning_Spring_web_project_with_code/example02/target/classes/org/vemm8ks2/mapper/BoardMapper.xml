@@ -8,4 +8,20 @@
 		SELECT * FROM tbl_board WHERE bno > 0
 		]]>
 	</select>
+	
+	<insert id="insert">
+		<![CDATA[
+		INSERT INTO tbl_board (bno, title, content, writer)
+		VALUES (seq_board.nextval, #{title}, #{content}, #{writer})
+		]]>
+	</insert>
+	
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="bno" order="BEFORE" resultType="long">
+		SELECT seq_board.nextval FROM dual
+		</selectKey>
+		
+		INSERT INTO tbl_board (bno, title, content, writer)
+		VALUES (#{bno}, #{title}, #{content}, #{writer})
+	</insert>
 </mapper>
