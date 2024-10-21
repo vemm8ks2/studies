@@ -78,6 +78,7 @@ public class BoardMapperTests {
 		board.setWriter("updated_user");
 		
 		int cnt = mapper.update(board);
+		
 		log.info("UPDATE COUNT: " + cnt);
 		
 	}
