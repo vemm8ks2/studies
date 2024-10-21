@@ -49,4 +49,13 @@ public class BoardMapperTests {
 		
 		log.info(board);		
 	}
+	
+	@Test
+	public void testRead() {
+		
+		// 존재하는 게시물 번호로 테스트
+		BoardVO board = mapper.read(5L);
+		
+		log.info(board);
+	}
 }

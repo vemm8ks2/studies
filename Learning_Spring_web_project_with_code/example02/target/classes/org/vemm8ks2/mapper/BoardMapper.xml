@@ -24,4 +24,8 @@
 		INSERT INTO tbl_board (bno, title, content, writer)
 		VALUES (#{bno}, #{title}, #{content}, #{writer})
 	</insert>
+	
+	<select id="read" resultType="org.vemm8ks2.domain.BoardVO">
+		SELECT * FROM tbl_board WHERE bno = #{bno}
+	</select>
 </mapper>
