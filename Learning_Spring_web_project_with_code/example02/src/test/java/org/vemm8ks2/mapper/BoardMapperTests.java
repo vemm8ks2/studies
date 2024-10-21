@@ -64,4 +64,22 @@ public class BoardMapperTests {
 		
 		log.info("DELETE COUNT: " + mapper.delete(3L));
 	}
+	
+	@Test
+	public void testUpdate() {
+		
+		BoardVO board = new BoardVO();
+		
+		// 실행 전 존재하는 번호인지 확인할 것
+		
+		board.setBno(5L);
+		board.setTitle("수정된 제목");
+		board.setContent("수정된 내용");
+		board.setWriter("updated_user");
+		
+		int cnt = mapper.update(board);
+		log.info("UPDATE COUNT: " + cnt);
+		
+	}
+	
 }
