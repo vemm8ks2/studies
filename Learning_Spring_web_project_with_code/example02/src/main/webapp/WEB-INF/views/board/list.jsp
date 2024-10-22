@@ -95,6 +95,11 @@
 
 	<%@include file="../includes/footer.jsp" %>
 	
+	<script type="text/javascript">
+		$(document).ready(function() {
+			const result = '<c:out value="${result}" />';
+		})
+	</script>
 </body>
 
 </html>
