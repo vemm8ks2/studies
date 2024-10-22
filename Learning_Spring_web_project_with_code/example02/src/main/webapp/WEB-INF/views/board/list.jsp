@@ -46,8 +46,11 @@
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                <button id="regBtn" type="button" class="btn btn-xs pull-right">
+                	Register New Board
+               	</button>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -123,6 +126,10 @@
 				
 				$("#myModal").modal("show");
 			}
+			
+			$("#regBtn").on("click", function() {
+				self.location = "/board/register";
+			})
 		});
 	</script>
 </body>
