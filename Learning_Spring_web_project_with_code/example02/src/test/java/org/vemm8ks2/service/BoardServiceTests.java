@@ -51,4 +51,26 @@ public class BoardServiceTests {
 		
 		log.info(service.get(1L));
 	}
+	
+	@Test
+	public void testDelete() {
+		
+		// 게시물 번호의 존재 여부 확인
+		
+		log.info("REMOVE RESULT: " + service.remove(2L));
+	}
+	
+	@Test
+	public void testUpdate() {
+		
+		BoardVO board = service.get(1L);
+		
+		if (board == null) {
+			return;
+		}
+		
+		board.setTitle("제목을 수정합니다.");
+		
+		log.info("MODIFY RESULT: " + service.modify(board));
+	}
 }
