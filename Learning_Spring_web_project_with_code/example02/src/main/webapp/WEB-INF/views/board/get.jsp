@@ -73,6 +73,10 @@
                                 	>
 	                                	List
 	                                </button>
+	                                
+	                                <form id="operForm" action="/board/modify" method="get">
+	                                	<input type="hidden" id="bno" name="bno" value='<c:out value="${board.bno}" />' />
+	                                </form>
                                 </div>
                         </div>
                     </div>
@@ -84,6 +88,22 @@
     <!-- /.container-fluid -->
 
 	<%@include file="../includes/footer.jsp" %>
+	
+	<script type="text/javascript">
+		$(document).ready(function() {
+			const operForm = $("#operForm");
+			
+			$("button[data-oper='modify']").on("click", function(e) {
+				operForm.attr("action", "/board/modify").submit();
+			})
+			
+			$("button[data-oper='list']").on("click", function(e) {
+				operForm.find("#bno").remove();
+				operForm.attr("action", "/board/list")
+				operForm.submit();
+			})
+		})
+	</script>
 
 </body>
 
