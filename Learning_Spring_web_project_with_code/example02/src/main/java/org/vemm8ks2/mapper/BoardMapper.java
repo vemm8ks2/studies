@@ -3,10 +3,13 @@ package org.vemm8ks2.mapper;
 import java.util.List;
 
 import org.vemm8ks2.domain.BoardVO;
+import org.vemm8ks2.domain.Criteria;
 
 public interface BoardMapper {
 
 	public List<BoardVO> getList();
+	
+	public List<BoardVO> getListWithPaging(Criteria cri);
 	
 	public void insert(BoardVO board);
 	
