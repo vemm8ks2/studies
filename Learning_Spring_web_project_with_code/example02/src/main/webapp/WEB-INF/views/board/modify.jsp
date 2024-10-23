@@ -106,8 +106,10 @@
 				if (operation === 'remove') {
 					formObj.attr("action", "/board/remove");
 				} else if (operation === 'list') {
-					self.location = "/board/list";
-					return;
+					form
+						.attr("action", "/board/list")
+						.attr("method", "get");
+					form.empty();
 				}
 				
 				formObj.submit();
