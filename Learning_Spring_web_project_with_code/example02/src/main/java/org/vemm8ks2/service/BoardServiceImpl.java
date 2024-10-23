@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.vemm8ks2.domain.BoardVO;
+import org.vemm8ks2.domain.Criteria;
 import org.vemm8ks2.mapper.BoardMapper;
 
 import lombok.AllArgsConstructor;
@@ -50,9 +51,9 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<BoardVO> getList() {
+	public List<BoardVO> getList(Criteria cri) {
 
-		log.info("getList ...");
+		log.info("getList with criteria: " + cri);
 		
 		return mapper.getList();
 	}
