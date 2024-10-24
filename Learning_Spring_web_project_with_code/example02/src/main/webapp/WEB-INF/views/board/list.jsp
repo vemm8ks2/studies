@@ -89,7 +89,29 @@
                         	</c:forEach>
                         </tbody>
                     </table>
-
+                    
+                    <nav aria-label="Page navigation">
+					  <ul class="pagination justify-content-end mt-3">
+                   		<c:if test="${pageMaker.prev}">
+                   			<li class="page-item">
+                   				<a class="page-link" href="#">Previous</a>
+                   			</li>
+                   		</c:if>
+                   		
+                   		<c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
+                   			<li class="page-item">
+                   				<a class="page-link" href="#">${num}</a>
+                   			</li>
+                   		</c:forEach>
+                   		
+                   		<c:if test="${pageMaker.next}">
+                   			<li class="page-item">
+                   				<a class="page-link" href="#">Next</a>
+                   			</li>
+                   		</c:if>
+					  </ul>
+					</nav>
+					
 					<!-- Modal -->
 					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					    <div class="modal-dialog" role="document">
@@ -113,6 +135,7 @@
 	
 	<script type="text/javascript">
 		$(document).ready(function() {
+			
 			const result = '<c:out value="${result}" />';
 			
 			checkModal(result);
@@ -133,6 +156,13 @@
 				self.location = "/board/register";
 			})
 		});
+		
+	    $.extend( $.fn.dataTable.defaults, {
+	    	"bFilter": false, 
+	    	"bInfo": false,
+	        "bPaginate": false,
+	        "bLengthChange": false,
+	    } );
 	</script>
 </body>
 
