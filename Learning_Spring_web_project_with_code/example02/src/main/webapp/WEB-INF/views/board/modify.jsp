@@ -45,6 +45,9 @@
                                 <h1 class="h4 text-gray-900 mb-4">Board Register</h1>
                             </div>
                             <form role="form" action="/board/modify" method="post">
+                            	<input type="hidden" name="pageNum" value='<c:out value="${cri.pageNum}" />' />
+                            	<input type="hidden" name="amount" value='<c:out value="${cri.amount}" />'>
+                            	
                                 <div class="form-group">
                                 	<label>Bno</label>
                                 	<input class="form-control" name="bno" value='<c:out value="${board.bno}" />' readonly="readonly" />
