@@ -23,3 +23,11 @@ COMMIT;
 
 // 테이블 생성 및 더미 데이터 생성 후 조회
 SELECT * FROM tbl_board;
+
+// 8.1.2
+SELECT * FROM tbl_board WHERE bno > 0;
+
+// 12.1.1
+-- 재귀 복사를 통해서 데이터의 개수를 늘린다. 반복해서 여러 번 실행
+INSERT INTO tbl_board (bno, title, content, writer)
+(SELECT seq_board.nextval, title, content, writer FROM tbl_board);
