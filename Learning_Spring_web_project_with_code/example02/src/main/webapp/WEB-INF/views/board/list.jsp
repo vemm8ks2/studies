@@ -93,24 +93,29 @@
                     <nav aria-label="Page navigation">
 					  <ul class="pagination justify-content-end mt-3">
                    		<c:if test="${pageMaker.prev}">
-                   			<li class="page-item">
+                   			<li class="page-item previous">
                    				<a class="page-link" href="#">Previous</a>
                    			</li>
                    		</c:if>
                    		
                    		<c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
-                   			<li class="page-item">
-                   				<a class="page-link" href="#">${num}</a>
+                   			<li class="page-item ${pageMaker.cri.pageNum == num ? 'active' : ''}">
+                   				<a class="page-link" href="${num}">${num}</a>
                    			</li>
                    		</c:forEach>
                    		
                    		<c:if test="${pageMaker.next}">
-                   			<li class="page-item">
+                   			<li class="page-item next">
                    				<a class="page-link" href="#">Next</a>
                    			</li>
                    		</c:if>
 					  </ul>
 					</nav>
+					
+					<form id="actionForm" action="/board/list" method="get">
+						<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
+						<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+					</form>
 					
 					<!-- Modal -->
 					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -154,12 +159,24 @@
 			
 			$("#regBtn").on("click", function() {
 				self.location = "/board/register";
+			});
+			
+			const actionForm = $("#actionForm");
+			
+			$(".page-item a").on("click", function(e) {
+				e.preventDefault();
+				
+				console.log('click');
+				
+				actionForm.find("input[name='pageNum']").val($(this).attr('href'));
+				actionForm.submit();
 			})
 		});
 		
 	    $.extend( $.fn.dataTable.defaults, {
 	    	"bFilter": false, 
 	    	"bInfo": false,
+	    	"bSort": false,
 	        "bPaginate": false,
 	        "bLengthChange": false,
 	    } );
