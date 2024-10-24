@@ -109,10 +109,16 @@
 				if (operation === 'remove') {
 					formObj.attr("action", "/board/remove");
 				} else if (operation === 'list') {
-					form
+					formObj
 						.attr("action", "/board/list")
 						.attr("method", "get");
-					form.empty();
+					
+					const pageNumTag = $("input[name='pageNum']").clone();
+					const amountTag = $("input[name='amount']").clone();
+					
+					formObj.empty();
+					formObj.append(pageNumTag);
+					formObj.append(amountTag);
 				}
 				
 				formObj.submit();
