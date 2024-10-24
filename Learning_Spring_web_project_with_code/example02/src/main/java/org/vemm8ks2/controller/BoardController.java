@@ -61,7 +61,9 @@ public class BoardController {
 	}
 	
 	@PostMapping("/modify")
-	public String modify(BoardVO board, RedirectAttributes attr) {
+	public String modify(BoardVO board, 
+						 @ModelAttribute("cri") Criteria cri, 
+						 RedirectAttributes attr) {
 		
 		log.info("modify: " + board);
 		
@@ -69,17 +71,25 @@ public class BoardController {
 			attr.addFlashAttribute("result", "success");
 		}
 		
+		attr.addAttribute("pageNum", cri.getPageNum());
+		attr.addAttribute("amount", cri.getAmount());
+		
 		return "redirect:/board/list";
 	}
 	
 	@PostMapping("/remove")
-	public String remove(@RequestParam("bno") Long bno, RedirectAttributes attr) {
+	public String remove(@RequestParam("bno") Long bno, 
+						 @ModelAttribute("cri") Criteria cri, 
+						 RedirectAttributes attr) {
 		
 		log.info("remove ... " + bno);
 		
 		if (service.remove(bno)) {
 			attr.addFlashAttribute("result", "success");
 		}
+		
+		attr.addAttribute("pageNum", cri.getPageNum());
+		attr.addAttribute("amount", cri.getAmount());
 		
 		return "redirect:/board/list";
 	}
