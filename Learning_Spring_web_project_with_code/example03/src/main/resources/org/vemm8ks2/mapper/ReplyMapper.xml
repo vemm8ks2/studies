@@ -11,4 +11,8 @@
 	<select id="read" resultType="org.vemm8ks2.domain.ReplyVO">
 		SELECT * FROM tbl_reply WHERE rno = #{rno}
 	</select>
+	
+	<delete id="delete">
+		DELETE FROM tbl_reply WHERE rno = #{rno}
+	</delete>
 </mapper>

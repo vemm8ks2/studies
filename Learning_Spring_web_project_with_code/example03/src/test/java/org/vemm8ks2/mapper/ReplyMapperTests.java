@@ -49,4 +49,12 @@ public class ReplyMapperTests {
     
     log.info(vo);
   }
+  
+  @Test
+  public void testDelete() {
+    
+    Long targetRno = 1L;
+    
+    mapper.delete(targetRno);
+  }
 }
