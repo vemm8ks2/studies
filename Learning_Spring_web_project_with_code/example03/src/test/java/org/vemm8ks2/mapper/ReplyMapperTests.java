@@ -39,4 +39,14 @@ public class ReplyMapperTests {
       mapper.insert(vo);
     });
   }
+  
+  @Test
+  public void testRead() {
+    
+    Long targetRno = 5L;
+    
+    ReplyVO vo = mapper.read(targetRno);
+    
+    log.info(vo);
+  }
 }

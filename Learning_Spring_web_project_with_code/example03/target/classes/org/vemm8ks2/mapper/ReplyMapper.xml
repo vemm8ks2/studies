@@ -7,4 +7,8 @@
 		INSERT INTO tbl_reply (rno, bno, reply, replyer)
 		VALUES (seq_reply.nextval, #{bno}, #{reply}, #{replyer})
 	</insert>
+	
+	<select id="read" resultType="org.vemm8ks2.domain.ReplyVO">
+		SELECT * FROM tbl_reply WHERE rno = #{rno}
+	</select>
 </mapper>
