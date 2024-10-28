@@ -94,6 +94,71 @@
                         </tbody>
                     </table>
                     
+                    <div class='row justify-content-end px-3'>
+                   		<form id="searchForm" action="/board/list" method="get" class="d-flex py-2 w-50">
+                   			<select class="custom-select w-25" name="type">
+                   				<option 
+                   					value=""
+                   					<c:out value="${pageMaker.cri.type == null ? 'selected' : ''}" />
+                 				>
+                   					---
+               					</option>
+                   				<option 
+                   					value="T"
+                   					<c:out value="${pageMaker.cri.type eq 'T' ? 'selected' : ''}" />
+                 				>
+                 					제목
+                 				</option>
+                   				<option 
+                   					value="C"
+                   					<c:out value="${pageMaker.cri.type eq 'C' ? 'selected' : ''}" />
+                   				>
+                   					내용
+                   				</option>
+                   				<option 
+                   					value="W"
+                   					<c:out value="${pageMaker.cri.type eq 'W' ? 'selected' : ''}" />
+                   				>
+                   					작성자
+                   				</option>
+                   				<option 
+                   					value="TC"
+                   					<c:out value="${pageMaker.cri.type eq 'TC' ? 'selected' : ''}" />
+                   				>
+                   					제목 or 내용
+                   				</option>
+                   				<option 
+                   					value="TW"
+                   					<c:out value="${pageMaker.cri.type eq 'TW' ? 'selected' : ''}" />
+                   				>
+                   					제목 or 작성자
+                   				</option>
+                   				<option 
+                   					value="TWC"
+                   					<c:out value="${pageMaker.cri.type eq 'TWC' ? 'selected' : ''}" />
+                   				>
+                   					제목 or 내용 or 작성자
+                   				</option>
+                   			</select>
+                   			<input 
+                   				class="form-control mx-2" 
+                   				name="keyword"
+                   				value='<c:out value="${pageMaker.cri.keyword}" />' 
+                   			/>
+                   			<input 
+                   				type="hidden" 
+                   				name="pageNum" 
+                   				value='<c:out value="${pageMaker.cri.pageNum}" />' 
+                   			/>
+                   			<input 
+                   				type="hidden" 
+                   				name="amount" 
+                   				value='<c:out value="${pageMaker.cri.amount}" />' 
+                   			/>
+                   			<button class="btn btn-default">Search</button>
+                   		</form>
+                    </div>
+                    
                     <nav aria-label="Page navigation">
 					  <ul class="pagination justify-content-end mt-3">
                    		<c:if test="${pageMaker.prev}">
@@ -119,6 +184,8 @@
 					<form id="actionForm" action="/board/list" method="get">
 						<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
 						<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+						<input type="hidden" name="type" value='<c:out value="${pageMaker.cri.amount}" />' />
+						<input type="hidden" name="keyword" value='<c:out value="${pageMaker.cri.keyword}" />' />
 					</form>
 					
 					<!-- Modal -->
@@ -180,6 +247,25 @@
 				actionForm.append("<input type='hidden' name='bno' value='" + $(this).attr("href") + "' >");
 				actionForm.attr("action", "/board/get");
 				actionForm.submit();
+			})
+			
+			const searchForm = $("#searchForm");
+			
+			$("#searchForm button").on("click", function(e) {
+				e.preventDefault();
+				
+				if (!searchForm.find("option:selected").val()) {
+					alert("검색 종류를 선택하세요.");
+					return;
+				}
+				
+				if (!searchForm.find("input[name='keyword']").val()) {
+					alert("키워드를 입력하세요.");
+					return;
+				}
+				
+				searchForm.find("input[name='pageNum']").val("1");
+				searchForm.submit();
 			})
 		});
 		
