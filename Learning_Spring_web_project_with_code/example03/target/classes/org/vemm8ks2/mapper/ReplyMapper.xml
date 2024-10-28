@@ -21,4 +21,11 @@
 		SET reply = #{reply}, updatedate = sysdate
 		WHERE rno = #{rno}
 	</update>
+	
+	<select id="getListWithPaging" resultType="org.vemm8ks2.domain.ReplyVO">
+		SELECT rno, bno, reply, replyer, replyDate, updatedate
+		FROM tbl_reply
+		WHERE bno = #{bno}
+		ORDER BY rno ASC
+	</select>
 </mapper>
