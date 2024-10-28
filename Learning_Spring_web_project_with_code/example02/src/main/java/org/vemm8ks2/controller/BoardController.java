@@ -77,6 +77,8 @@ public class BoardController {
 		
 		attr.addAttribute("pageNum", cri.getPageNum());
 		attr.addAttribute("amount", cri.getAmount());
+		attr.addAttribute("type", cri.getType());
+		attr.addAttribute("keyword", cri.getKeyword());
 		
 		return "redirect:/board/list";
 	}
@@ -94,6 +96,8 @@ public class BoardController {
 		
 		attr.addAttribute("pageNum", cri.getPageNum());
 		attr.addAttribute("amount", cri.getAmount());
+		attr.addAttribute("type", cri.getType());
+		attr.addAttribute("keyword", cri.getKeyword());
 		
 		return "redirect:/board/list";
 	}
