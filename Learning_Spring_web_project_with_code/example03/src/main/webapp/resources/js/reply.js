@@ -1,5 +1,27 @@
 console.log("Reply Module ...");
 
 const replyService = (function() {
-	return { name : "AAAA" };
+
+	function add(reply, callback, error) {
+		console.log("add reply ...");
+		
+		$.ajax({
+			type: 'post',
+			url: '/replies/new',
+			data: JSON.stringify(reply),
+			contentType: "application/json; charset=utf-8",
+			success: function(result, status, xhr) {
+				if (callback) {
+					callback(result);
+				}
+			},
+			error: function(xhr, status, err) {
+				if (error) {
+					error(err);
+				}
+			}
+		});
+	}
+
+	return { add };
 })();

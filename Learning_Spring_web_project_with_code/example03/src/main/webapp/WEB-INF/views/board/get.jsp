@@ -95,6 +95,17 @@
 	
 	<script type="text/javascript" src="/resources/js/reply.js"></script>
 	<script type="text/javascript">
+		console.log('==========');
+		console.log('JS TEST');
+		
+		const bno = '<c:out value="${board.bno}" />';
+		
+		replyService.add(
+			{ reply: "JS TEST", replyer: "tester", bno },
+			function(result) { alert('RESULT: ' + result); }
+		);
+	</script>
+	<script type="text/javascript">
 		$(document).ready(function() {
 			const operForm = $("#operForm");
 			
@@ -107,11 +118,6 @@
 				operForm.attr("action", "/board/list")
 				operForm.submit();
 			})
-		})
-	</script>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			console.log(replyService);
 		})
 	</script>
 
