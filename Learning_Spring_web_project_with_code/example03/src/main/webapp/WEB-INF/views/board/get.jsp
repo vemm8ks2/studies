@@ -93,6 +93,7 @@
 
 	<%@include file="../includes/footer.jsp" %>
 	
+	<script type="text/javascript" src="/resources/js/reply.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			const operForm = $("#operForm");
@@ -106,6 +107,11 @@
 				operForm.attr("action", "/board/list")
 				operForm.submit();
 			})
+		})
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			console.log(replyService);
 		})
 	</script>
 
