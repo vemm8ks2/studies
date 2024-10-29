@@ -93,8 +93,11 @@
                 <div class='row'>
                 	<div class='col-lg-12'>
                 		<div class='p-5'>
-                			<div class='card-title'>
-                				<i class='fa fa-comments fa-fw'></i> Reply
+                			<div class='card-title d-flex align-items-center justify-content-between'>
+                				<p>
+	                				<i class='fa fa-comments fa-fw'></i> Reply
+	                			</p>
+                				<button id='addReplyBtn' class="btn btn-primary btn-xs pull-right">New Reply</button>
                 			</div>
                 			
                 			<div class="chat">
@@ -118,95 +121,170 @@
         </div>
     </div>
     <!-- /.container-fluid -->
+    
+    <!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">REPLY MODAL</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <div class="form-group">
+	        	<label>Reply</label>
+	        	<input class="form-control" name="reply" value="New Reply!" />
+	        </div>
+	        <div class='form-group'>
+	        	<label>Replyer</label>
+	        	<input class="form-control" name="replyer" value="replyer" />
+	        </div>
+	        <div class='form-group'>
+	        	<label>Reply Date</label>
+	        	<input class="form-control" name="replyDate" value="" />
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button id="modalModBtn" type="button" class="btn btn-warning">Modify</button>
+	        <button id="modalRemoveBtn" type="button" class="btn btn-danger">Remove</button>
+	        <button id="modalRegisterBtn" type="button" class="btn btn-primary">Register</button>
+	        <button id="modalCloseBtn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
 	<%@include file="../includes/footer.jsp" %>
 	
 	<script type="text/javascript" src="/resources/js/reply.js"></script>
 	<script type="text/javascript">
-		console.log('==========');
-		console.log('JS TEST');
-		
-		const bno = '<c:out value="${board.bno}" />';
-		const reply = $('.chat');
-		
-		showList(1);
-		
-		function showList(page) {
+		$(document).ready(function() {
+			const bno = '<c:out value="${board.bno}" />';
+			const reply = $('.chat');
 			
-			replyService.getList({ bno, page: page || 1 }, function(list) {
+			showList(1);
+			
+			function showList(page) {
 				
-				console.log(list);
-				
-				let str = '';
-				
-				if (!list || list.length === 0) {
-					reply.html('');
-					return;
-				}
-				
-				const len = list.length || 0;
-				
-				for (let i = 0; i < len; i++) {
-					str += `
-						<div class='card-text' data-rno='\${list[i].rno}'>
-							<div class='header'>
-								<strong class='primary-font'>\${list[i].replyer}</strong>
-								<small class='pull-right text-muted'>
-									\${replyService.displayTime(list[i].replyDate)}
-								</small>
-							</div>
-							<p>\${list[i].reply}</p>
-	        			</div>
-					`;
-				}
-				
-				reply.html(str);
-			}); // end getList function
-		} // end showList
+				replyService.getList({ bno, page: page || 1 }, function(list) {
+					
+					console.log(list);
+					
+					let str = '';
+					
+					if (!list || list.length === 0) {
+						reply.html('');
+						return;
+					}
+					
+					const len = list.length || 0;
+					
+					for (let i = 0; i < len; i++) {
+						str += `
+							<div class='card-text' data-rno='\${list[i].rno}'>
+								<div class='header'>
+									<strong class='primary-font'>\${list[i].replyer}</strong>
+									<small class='pull-right text-muted'>
+										\${replyService.displayTime(list[i].replyDate)}
+									</small>
+								</div>
+								<p>\${list[i].reply}</p>
+		        			</div>
+						`;
+					}
+					
+					reply.html(str);
+				}); // end getList function
+			} // end showList
 
-		/*
-		replyService.add(
-			{ reply: "JS TEST", replyer: "tester", bno },
-			function(result) { alert('RESULT: ' + result); }
-		);
-		*/
-		
-		/*
-		replyService.remove(
-			15,
-			function(count) {
-				console.log(count);
-				
-				if (count === 'success') alert('REMOVED');
-			},
-			function(err) {
-				alert('ERRPR ...');
-			}
-		);
-		*/
-		
-		/*
-		replyService.update({
-			rno: 14,
-			bno,
-			reply: 'Modified Reply ...'
-		}, function(result) {
-			alert('수정 완료 ...');
-		});
-		*/
-		
-		replyService.getList(
-			{ bno, page: 1 },
-			function(list) {
-				const len = list.length || 0;
-				
-				for (let i = 0; i < len; i++) {
-					console.log(list[i]);
+			/*
+			replyService.add(
+				{ reply: "JS TEST", replyer: "tester", bno },
+				function(result) { alert('RESULT: ' + result); }
+			);
+			*/
+			
+			/*
+			replyService.remove(
+				15,
+				function(count) {
+					console.log(count);
+					
+					if (count === 'success') alert('REMOVED');
+				},
+				function(err) {
+					alert('ERRPR ...');
 				}
-			}
-		);
-		
-		replyService.get(10, function(data) { console.log(data); });
+			);
+			*/
+			
+			/*
+			replyService.update({
+				rno: 14,
+				bno,
+				reply: 'Modified Reply ...'
+			}, function(result) {
+				alert('수정 완료 ...');
+			});
+			*/
+			
+			replyService.getList(
+				{ bno, page: 1 },
+				function(list) {
+					const len = list.length || 0;
+					
+					for (let i = 0; i < len; i++) {
+						console.log(list[i]);
+					}
+				}
+			);
+			
+			replyService.get(10, function(data) { console.log(data); });
+		})
+	</script>
+	<script>
+		$(document).ready(function() {
+			const bno = '<c:out value="${board.bno}" />';
+			
+			const modal = $('.modal');
+			
+			const modalInputReply = modal.find(`input[name='reply']`);
+			const modalInputReplyer = modal.find(`input[name='replyer']`);
+			const modalInputReplyDate = modal.find(`input[name='replyDate']`);
+			
+			const modalModBtn = $('#modalModBtn');
+			const modalRemoveBtn = $('#modalRemoveBtn');
+			const modalRegisterBtn = $('#modalRegisterBtn');
+			
+			$('#addReplyBtn').on('click', function(e) {
+				
+				modal.find('input').val('');
+				modalInputReplyDate.closest('div').hide();
+				modal.find('button[id != "modalCloseBtn"]').hide();
+				
+				modalRegisterBtn.show();
+				
+				$('.modal').modal('show');
+			})
+			
+			modalRegisterBtn.on('click', function(e) {
+				
+				const reply = {
+					reply: modalInputReply.val(),
+					replyer: modalInputReplyer.val(),
+					bno,
+				};
+				
+				replyService.add(reply, function(result) {
+					alert(result);
+					
+					modal.find('input').val();
+					modal.modal('hide');
+				});
+			})
+		})
 	</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
