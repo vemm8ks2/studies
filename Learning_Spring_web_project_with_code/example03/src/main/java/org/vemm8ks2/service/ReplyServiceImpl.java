@@ -3,6 +3,7 @@ package org.vemm8ks2.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.vemm8ks2.domain.Criteria;
+import org.vemm8ks2.domain.ReplyPageDTO;
 import org.vemm8ks2.domain.ReplyVO;
 import org.vemm8ks2.mapper.ReplyMapper;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ public class ReplyServiceImpl implements ReplyService {
   public int register(ReplyVO vo) {
 
     log.info("register ... " + vo);
-    
+
     return mapper.insert(vo);
   }
 
@@ -27,7 +28,7 @@ public class ReplyServiceImpl implements ReplyService {
   public ReplyVO get(Long rno) {
 
     log.info("get ... " + rno);
-    
+
     return mapper.read(rno);
   }
 
@@ -35,7 +36,7 @@ public class ReplyServiceImpl implements ReplyService {
   public int modify(ReplyVO vo) {
 
     log.info("modify ... " + vo);
-    
+
     return mapper.update(vo);
   }
 
@@ -43,7 +44,7 @@ public class ReplyServiceImpl implements ReplyService {
   public int remove(Long rno) {
 
     log.info("remove ... " + rno);
-    
+
     return mapper.delete(rno);
   }
 
@@ -51,9 +52,13 @@ public class ReplyServiceImpl implements ReplyService {
   public List<ReplyVO> getList(Criteria cri, Long bno) {
 
     log.info("get Reply List of a Board " + bno);
-    
+
     return mapper.getListWithPaging(cri, bno);
   }
-  
-  
+
+  @Override
+  public ReplyPageDTO getListPage(Criteria cri, Long bno) {
+    return new ReplyPageDTO(mapper.getCountByBno(bno), mapper.getListWithPaging(cri, bno));
+  }
+
 }
