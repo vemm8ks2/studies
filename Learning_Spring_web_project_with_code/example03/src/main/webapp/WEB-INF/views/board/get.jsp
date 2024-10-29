@@ -303,6 +303,31 @@
 					$('.modal').modal('show');
 				})
 			})
+			
+			modalModBtn.on('click', function(e) {
+				
+				const reply = {
+					rno: modal.data('rno'),
+					reply: modalInputReply.val(),
+				};
+				
+				replyService.update(reply, function(result) {
+					alert(result);
+					modal.modal('hide');
+					showList(1);
+				})
+			})
+			
+			modalRemoveBtn.on('click', function(e) {
+				
+				const rno = modal.data('rno');
+				
+				replyService.remove(rno, function(result) {
+					alert(result);
+					modal.modal('hide');
+					showList(1);
+				})
+			})
 		})
 	</script>
 	<script type="text/javascript">
