@@ -99,6 +99,13 @@
 		console.log('JS TEST');
 		
 		const bno = '<c:out value="${board.bno}" />';
+
+		/*
+		replyService.add(
+			{ reply: "JS TEST", replyer: "tester", bno },
+			function(result) { alert('RESULT: ' + result); }
+		);
+		*/
 		
 		/*
 		replyService.remove(
@@ -114,6 +121,14 @@
 		);
 		*/
 		
+		replyService.update({
+			rno: 14,
+			bno,
+			reply: 'Modified Reply ...'
+		}, function(result) {
+			alert('수정 완료 ...');
+		});
+		
 		replyService.getList(
 			{ bno, page: 1 },
 			function(list) {
@@ -124,13 +139,6 @@
 				}
 			}
 		);
-		
-		/*
-		replyService.add(
-			{ reply: "JS TEST", replyer: "tester", bno },
-			function(result) { alert('RESULT: ' + result); }
-		);
-		*/
 	</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
