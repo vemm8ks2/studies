@@ -160,6 +160,8 @@
 	
 	<script type="text/javascript" src="/resources/js/reply.js"></script>
 	<script type="text/javascript">
+	</script>
+	<script type="text/javascript">
 		$(document).ready(function() {
 			const bno = '<c:out value="${board.bno}" />';
 			const reply = $('.chat');
@@ -198,6 +200,45 @@
 					reply.html(str);
 				}); // end getList function
 			} // end showList
+			
+			const modal = $('.modal');
+			
+			const modalInputReply = modal.find(`input[name='reply']`);
+			const modalInputReplyer = modal.find(`input[name='replyer']`);
+			const modalInputReplyDate = modal.find(`input[name='replyDate']`);
+			
+			const modalModBtn = $('#modalModBtn');
+			const modalRemoveBtn = $('#modalRemoveBtn');
+			const modalRegisterBtn = $('#modalRegisterBtn');
+			
+			$('#addReplyBtn').on('click', function(e) {
+				
+				modal.find('input').val('');
+				modalInputReplyDate.closest('div').hide();
+				modal.find('button[id != "modalCloseBtn"]').hide();
+				
+				modalRegisterBtn.show();
+				
+				$('.modal').modal('show');
+			})
+			
+			modalRegisterBtn.on('click', function(e) {
+				
+				const reply = {
+					reply: modalInputReply.val(),
+					replyer: modalInputReplyer.val(),
+					bno,
+				};
+				
+				replyService.add(reply, function(result) {
+					alert(result);
+					
+					modal.find('input').val();
+					modal.modal('hide');
+					
+					showList(1);
+				});
+			})
 
 			/*
 			replyService.add(
@@ -242,48 +283,6 @@
 			);
 			
 			replyService.get(10, function(data) { console.log(data); });
-		})
-	</script>
-	<script>
-		$(document).ready(function() {
-			const bno = '<c:out value="${board.bno}" />';
-			
-			const modal = $('.modal');
-			
-			const modalInputReply = modal.find(`input[name='reply']`);
-			const modalInputReplyer = modal.find(`input[name='replyer']`);
-			const modalInputReplyDate = modal.find(`input[name='replyDate']`);
-			
-			const modalModBtn = $('#modalModBtn');
-			const modalRemoveBtn = $('#modalRemoveBtn');
-			const modalRegisterBtn = $('#modalRegisterBtn');
-			
-			$('#addReplyBtn').on('click', function(e) {
-				
-				modal.find('input').val('');
-				modalInputReplyDate.closest('div').hide();
-				modal.find('button[id != "modalCloseBtn"]').hide();
-				
-				modalRegisterBtn.show();
-				
-				$('.modal').modal('show');
-			})
-			
-			modalRegisterBtn.on('click', function(e) {
-				
-				const reply = {
-					reply: modalInputReply.val(),
-					replyer: modalInputReplyer.val(),
-					bno,
-				};
-				
-				replyService.add(reply, function(result) {
-					alert(result);
-					
-					modal.find('input').val();
-					modal.modal('hide');
-				});
-			})
 		})
 	</script>
 	<script type="text/javascript">
