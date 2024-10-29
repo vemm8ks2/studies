@@ -152,7 +152,7 @@
 							<div class='header'>
 								<strong class='primary-font'>\${list[i].replyer}</strong>
 								<small class='pull-right text-muted'>
-									\${list[i].replyDate}
+									\${replyService.displayTime(list[i].replyDate)}
 								</small>
 							</div>
 							<p>\${list[i].reply}</p>
