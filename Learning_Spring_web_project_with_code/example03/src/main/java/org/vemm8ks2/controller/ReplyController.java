@@ -1,12 +1,16 @@
 package org.vemm8ks2.controller;
 
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.vemm8ks2.domain.Criteria;
 import org.vemm8ks2.domain.ReplyVO;
 import org.vemm8ks2.service.ReplyService;
 import lombok.AllArgsConstructor;
@@ -32,5 +36,19 @@ public class ReplyController {
 
     return insertCount == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
         : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @GetMapping(value = "/pages/{bno}/{page}",
+      produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
+  public ResponseEntity<List<ReplyVO>> getList(@PathVariable("page") int page,
+      @PathVariable("bno") Long bno) {
+
+    log.info("getList ...");
+
+    Criteria cri = new Criteria(page, 10);
+
+    log.info(cri);
+
+    return new ResponseEntity<>(service.getList(cri, bno), HttpStatus.OK);
   }
 }
