@@ -100,10 +100,23 @@
 		
 		const bno = '<c:out value="${board.bno}" />';
 		
+		replyService.getList(
+			{ bno, page: 1 },
+			function(list) {
+				const len = list.length || 0;
+				
+				for (let i = 0; i < len; i++) {
+					console.log(list[i]);
+				}
+			}
+		);
+		
+		/*
 		replyService.add(
 			{ reply: "JS TEST", replyer: "tester", bno },
 			function(result) { alert('RESULT: ' + result); }
 		);
+		*/
 	</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
