@@ -42,52 +42,80 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Board Register</h1>
                             </div>
-                                <div class="form-group">
-                                	<label>Bno</label>
-                                	<input class="form-control" name="bno" value='<c:out value="${board.bno}" />' readonly="readonly" />
-                                </div>
-                                <div class="form-group">
-                                	<label>Title</label>
-                                	<input class="form-control" name="title" value='<c:out value="${board.title}" />' readonly="readonly" />
-                                </div>
-                                <div class="form-group">
-                                	<label>Text area</label>
-                                	<textarea class="form-control" rows="5" name="content" readonly="readonly"><c:out value="${board.content}" /></textarea>
-                                </div>
-                                <div class="form-group">
-                                	<label>Writer</label>
-                                	<input class="form-control" name="writer" value='<c:out value="${board.writer}" />' readonly="readonly" />
-                                </div>
-                                <div class="d-flex justify-content-center">
-	                                <button 
-	                                	data-oper="modify"
-	                                	onclick="location.href='/board/modify?bno=<c:out value="${board.bno}" />'" 
-	                                	class="btn btn-default"
-                                	>
-	                                	Modify
-	                                </button>
-	                                <button 
-	                                	data-oper="list"
-	                                	onclick="location.href='/board/list'" 
-	                                	class="btn btn-default mx-2"
-                                	>
-	                                	List
-	                                </button>
-	                                
-	                                <form id="operForm" action="/board/modify" method="get">
-	                                	<input type="hidden" id="bno" name="bno" value='<c:out value="${board.bno}" />' />
-	                                	<input type="hidden" name="pageNum" value='<c:out value="${cri.pageNum}" />' />
-	                                	<input type="hidden" name="amount" value='<c:out value="${cri.amount}" />' />
-	                                	<input type="hidden" name="keyword" value='<c:out value="${cri.keyword}" />' />
-	                                	<input type="hidden" name="type" value='<c:out value="${cri.type}" />' />
-	                                </form>
-                                </div>
+                            <div class="form-group">
+                            	<label>Bno</label>
+                            	<input class="form-control" name="bno" value='<c:out value="${board.bno}" />' readonly="readonly" />
+                            </div>
+                            <div class="form-group">
+                            	<label>Title</label>
+                            	<input class="form-control" name="title" value='<c:out value="${board.title}" />' readonly="readonly" />
+                            </div>
+                            <div class="form-group">
+                            	<label>Text area</label>
+                            	<textarea class="form-control" rows="5" name="content" readonly="readonly"><c:out value="${board.content}" /></textarea>
+                            </div>
+                            <div class="form-group">
+                            	<label>Writer</label>
+                            	<input class="form-control" name="writer" value='<c:out value="${board.writer}" />' readonly="readonly" />
+                            </div>
+                            <div class="d-flex justify-content-center">
+                             <button 
+                             	data-oper="modify"
+                             	onclick="location.href='/board/modify?bno=<c:out value="${board.bno}" />'" 
+                             	class="btn btn-default"
+                            	>
+                             	Modify
+                             </button>
+                             <button 
+                             	data-oper="list"
+                             	onclick="location.href='/board/list'" 
+                             	class="btn btn-default mx-2"
+                            	>
+                             	List
+                             </button>
+                             
+                             <form id="operForm" action="/board/modify" method="get">
+                             	<input type="hidden" id="bno" name="bno" value='<c:out value="${board.bno}" />' />
+                             	<input type="hidden" name="pageNum" value='<c:out value="${cri.pageNum}" />' />
+                             	<input type="hidden" name="amount" value='<c:out value="${cri.amount}" />' />
+                             	<input type="hidden" name="keyword" value='<c:out value="${cri.keyword}" />' />
+                             	<input type="hidden" name="type" value='<c:out value="${cri.type}" />' />
+                             </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
+        
+    	<div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <div class='row'>
+                	<div class='col-lg-12'>
+                		<div class='p-5'>
+                			<div class='card-title'>
+                				<i class='fa fa-comments fa-fw'></i> Reply
+                			</div>
+                			
+                			<div class="chat">
+               					<!-- start reply -->
+               					<div class="card-text">
+	       							<div class='header'>
+	       								<strong class='primary-font'>user00</strong>
+	       								<small class='pull-right text-muted'>
+	       									2018-01-01 13:13
+	       								</small>
+	       							</div>
+	       							<p>Good job!</p>
+       							</div>
+               					<!-- end reply -->
+                			</div>
+                		</div>
+                	</div>
+                </div>
+               	<!-- ./ end row -->
+            </div>
+        </div>
     </div>
     <!-- /.container-fluid -->
 
@@ -99,6 +127,42 @@
 		console.log('JS TEST');
 		
 		const bno = '<c:out value="${board.bno}" />';
+		const reply = $('.chat');
+		
+		showList(1);
+		
+		function showList(page) {
+			
+			replyService.getList({ bno, page: page || 1 }, function(list) {
+				
+				console.log(list);
+				
+				let str = '';
+				
+				if (!list || list.length === 0) {
+					reply.html('');
+					return;
+				}
+				
+				const len = list.length || 0;
+				
+				for (let i = 0; i < len; i++) {
+					str += `
+						<div class='card-text' data-rno='\${list[i].rno}'>
+							<div class='header'>
+								<strong class='primary-font'>\${list[i].replyer}</strong>
+								<small class='pull-right text-muted'>
+									\${list[i].replyDate}
+								</small>
+							</div>
+							<p>\${list[i].reply}</p>
+	        			</div>
+					`;
+				}
+				
+				reply.html(str);
+			}); // end getList function
+		} // end showList
 
 		/*
 		replyService.add(
