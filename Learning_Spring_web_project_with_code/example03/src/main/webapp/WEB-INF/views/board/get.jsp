@@ -166,6 +166,50 @@
 			const bno = '<c:out value="${board.bno}" />';
 			const reply = $('.chat');
 			
+			/*
+			replyService.add(
+				{ reply: "JS TEST", replyer: "tester", bno },
+				function(result) { alert('RESULT: ' + result); }
+			);
+			*/
+			
+			/*
+			replyService.remove(
+				15,
+				function(count) {
+					console.log(count);
+					
+					if (count === 'success') alert('REMOVED');
+				},
+				function(err) {
+					alert('ERRPR ...');
+				}
+			);
+			*/
+			
+			/*
+			replyService.update({
+				rno: 14,
+				bno,
+				reply: 'Modified Reply ...'
+			}, function(result) {
+				alert('수정 완료 ...');
+			});
+			*/
+			
+			replyService.getList(
+				{ bno, page: 1 },
+				function(list) {
+					const len = list.length || 0;
+					
+					for (let i = 0; i < len; i++) {
+						console.log(list[i]);
+					}
+				}
+			);
+			
+			replyService.get(10, function(data) { console.log(data); });
+			
 			showList(1);
 			
 			function showList(page) {
@@ -239,50 +283,26 @@
 					showList(1);
 				});
 			})
+			
+			$('.chat').on('click', '.card-text', function(e) {
+				
+				const rno = $(this).data('rno');
 
-			/*
-			replyService.add(
-				{ reply: "JS TEST", replyer: "tester", bno },
-				function(result) { alert('RESULT: ' + result); }
-			);
-			*/
-			
-			/*
-			replyService.remove(
-				15,
-				function(count) {
-					console.log(count);
+				replyService.get(rno, function(reply) {
+					modalInputReply.val(reply.reply);
+					modalInputReplyer.val(reply.replyer);
+					modalInputReplyDate
+						.val(replyService.displayTime(reply.replyDate))
+						.attr('readonly', 'readonly');
+				
+					modal.data('rno', reply.rno);
+					modal.find('button[id != "modalCloseBtn"]').hide();
+					modalModBtn.show();
+					modalRemoveBtn.show();
 					
-					if (count === 'success') alert('REMOVED');
-				},
-				function(err) {
-					alert('ERRPR ...');
-				}
-			);
-			*/
-			
-			/*
-			replyService.update({
-				rno: 14,
-				bno,
-				reply: 'Modified Reply ...'
-			}, function(result) {
-				alert('수정 완료 ...');
-			});
-			*/
-			
-			replyService.getList(
-				{ bno, page: 1 },
-				function(list) {
-					const len = list.length || 0;
-					
-					for (let i = 0; i < len; i++) {
-						console.log(list[i]);
-					}
-				}
-			);
-			
-			replyService.get(10, function(data) { console.log(data); });
+					$('.modal').modal('show');
+				})
+			})
 		})
 	</script>
 	<script type="text/javascript">
