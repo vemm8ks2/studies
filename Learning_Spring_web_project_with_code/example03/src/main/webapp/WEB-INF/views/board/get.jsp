@@ -121,6 +121,7 @@
 		);
 		*/
 		
+		/*
 		replyService.update({
 			rno: 14,
 			bno,
@@ -128,6 +129,7 @@
 		}, function(result) {
 			alert('수정 완료 ...');
 		});
+		*/
 		
 		replyService.getList(
 			{ bno, page: 1 },
@@ -139,6 +141,8 @@
 				}
 			}
 		);
+		
+		replyService.get(10, function(data) { console.log(data); });
 	</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
