@@ -47,3 +47,6 @@ CREATE SEQUENCE seq_reply;
 ALTER TABLE tbl_reply ADD CONSTRAINT pk_reply PRIMARY KEY (rno);
 
 ALTER TABLE tbl_reply ADD CONSTRAINT fk_reply_board FOREIGN KEY (bno) REFERENCES tbl_board (bno);
+
+// 17.6.1 데이터베이스의 인덱스 설계
+CREATE INDEX idx_reply ON tbl_reply (bno DESC, rno ASC);
