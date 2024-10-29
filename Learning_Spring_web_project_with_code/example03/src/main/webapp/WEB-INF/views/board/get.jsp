@@ -100,6 +100,20 @@
 		
 		const bno = '<c:out value="${board.bno}" />';
 		
+		/*
+		replyService.remove(
+			15,
+			function(count) {
+				console.log(count);
+				
+				if (count === 'success') alert('REMOVED');
+			},
+			function(err) {
+				alert('ERRPR ...');
+			}
+		);
+		*/
+		
 		replyService.getList(
 			{ bno, page: 1 },
 			function(list) {

@@ -37,6 +37,19 @@ const replyService = (function() {
 			if (error) error();
 		})		
 	}
+	
+	function remove(rno, callback, error) {
+		$.ajax({
+			type: 'delete',
+			url: `/replies/${rno}`,
+			success: function(deleteResult, status, xhr) {
+				if (callback) callback(deleteResult);
+			},
+			error: function(xhr, status, err) {
+				if (error) error(err);
+			}
+		});
+	}
 
-	return { add, getList };
+	return { add, getList, remove };
 })();
