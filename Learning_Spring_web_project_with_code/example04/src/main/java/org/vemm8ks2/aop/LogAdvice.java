@@ -12,6 +12,6 @@ public class LogAdvice {
 
   @Before("execution(* org.vemm8ks2.service.SampleService*.*(..))")
   public void logBefore() {
-    log.info("=========");
+    log.info("|-- ========= --|");
   }
 }
