@@ -244,6 +244,7 @@
 			$(".move").on("click", function(e) {
 				e.preventDefault();
 				
+				$("#actionForm > input").remove("[type=hidden][name=bno]");
 				actionForm.append("<input type='hidden' name='bno' value='" + $(this).attr("href") + "' >");
 				actionForm.attr("action", "/board/get");
 				actionForm.submit();
