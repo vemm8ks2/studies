@@ -311,7 +311,7 @@
 				replyService.update(reply, function(result) {
 					alert(result);
 					modal.modal('hide');
-					showList(1);
+					showList(pageNum);
 				})
 			})
 			
@@ -322,7 +322,7 @@
 				replyService.remove(rno, function(result) {
 					alert(result);
 					modal.modal('hide');
-					showList(1);
+					showList(pageNum);
 				})
 			})
 			
