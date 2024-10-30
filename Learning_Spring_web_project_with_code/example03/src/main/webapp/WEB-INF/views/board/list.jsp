@@ -94,7 +94,7 @@
                         </tbody>
                     </table>
                     
-                    <div class='row justify-content-end px-3'>
+                    <div class='row justify-content-end'>
                    		<form id="searchForm" action="/board/list" method="get" class="d-flex py-2 w-50">
                    			<select class="custom-select w-25" name="type">
                    				<option 

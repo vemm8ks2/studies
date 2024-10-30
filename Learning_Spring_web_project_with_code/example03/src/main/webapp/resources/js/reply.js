@@ -30,8 +30,10 @@ const replyService = (function() {
 		
 		$.getJSON(
 			`/replies/pages/${bno}/${page}.json`,
-			function(data) {
-				if (callback) callback(data);
+			function({ replyCnt, list }) {
+				if (callback) {
+					callback(replyCnt, list);
+				}
 			}
 		).fail(function(xhr, status, err) {
 			if (error) error();

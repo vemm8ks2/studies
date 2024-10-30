@@ -101,17 +101,9 @@
                 			</div>
                 			
                 			<div class="chat">
-               					<!-- start reply -->
-               					<div class="card-text">
-	       							<div class='header'>
-	       								<strong class='primary-font'>user00</strong>
-	       								<small class='pull-right text-muted'>
-	       									2018-01-01 13:13
-	       								</small>
-	       							</div>
-	       							<p>Good job!</p>
-       							</div>
-               					<!-- end reply -->
+                			</div>
+                			
+                			<div class="footer-pagination">
                 			</div>
                 		</div>
                 	</div>
@@ -214,14 +206,17 @@
 			
 			function showList(page) {
 				
-				replyService.getList({ bno, page: page || 1 }, function(list) {
-					
-					console.log(list);
+				replyService.getList({ bno, page: page || 1 }, function(replyCnt, list) {
+
+					if (page === -1) {
+						pageNum = Math.ceil(replyCnt / 10.0);
+						showList(pageNum);
+						return;
+					}
 					
 					let str = '';
 					
 					if (!list || list.length === 0) {
-						reply.html('');
 						return;
 					}
 					
@@ -242,6 +237,8 @@
 					}
 					
 					reply.html(str);
+					
+					showReplyPage(replyCnt);
 				}); // end getList function
 			} // end showList
 			
@@ -280,7 +277,7 @@
 					modal.find('input').val();
 					modal.modal('hide');
 					
-					showList(1);
+					showList(-1);
 				});
 			})
 			
@@ -328,6 +325,72 @@
 					showList(1);
 				})
 			})
+			
+			let pageNum = 1;
+			const replyPageFooter = $('.footer-pagination');
+			
+			replyPageFooter.on("click", "li a", function(e) {
+				e.preventDefault();
+				
+				console.log('page click');
+				
+				const targetPageNum = $(this).attr('href');
+				
+				console.log('target page num : ' + targetPageNum);
+				
+				pageNum = targetPageNum;
+				
+				showList(pageNum);
+			})
+			
+			function showReplyPage(replyCnt) {
+				
+				let endNum = Math.ceil(pageNum / 10.0) * 10;
+				let startNum = endNum - 9;
+				
+				let prev = startNum != 1;
+				let next = false;
+				
+				if (endNum * 10 >= replyCnt) {
+					endNum = Math.ceil(replyCnt / 10.0);
+				}
+				
+				if (endNum * 10 < replyCnt) {
+					next = true;
+				}
+				
+				let str = `<ul class="pagination justify-content-end mt-3">`;
+				
+				if (prev) {
+					str += `
+						<li class="page-item previous">
+	           				<a class="page-link" href="\${startNum - 1}">Previous</a>
+	           			</li>
+					`;
+				}
+				
+				for (let i = startNum; i <= endNum; i++) {
+					const active = pageNum == i ? 'active' : '';
+					
+					str += `
+               			<li class="page-item \${active}">
+	           				<a class="page-link" href="\${i}">\${i}</a>
+	           			</li>
+					`;
+				}
+				
+				if (next) {
+					str += `
+						<li class="page-item next">
+	           				<a class="page-link" href="\${endNum + 1}">Next</a>
+	           			</li>
+					`;
+				}
+				
+				str += `</ul>`;
+				
+				replyPageFooter.html(str);
+			}
 		})
 	</script>
 	<script type="text/javascript">
