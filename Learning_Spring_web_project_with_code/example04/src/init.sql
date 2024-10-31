@@ -54,3 +54,12 @@ CREATE INDEX idx_reply ON tbl_reply (bno DESC, rno ASC);
 // 19.2.2 예제 테이블 생성
 CREATE TABLE tbl_sample1(col1 VARCHAR2(500));
 CREATE TABLE tbl_sample2(col2 VARCHAR2(50));
+
+// 20 댓글과 댓글 수에 대한 처리
+ALTER TABLE tbl_board ADD (replycnt NUMBER DEFAULT 0);
+UPDATE tbl_board 
+SET replycnt = (
+	SELECT COUNT(rno) 
+	FROM tbl_reply 
+	WHERE tbl_reply.bno = tbl_board.bno
+);
