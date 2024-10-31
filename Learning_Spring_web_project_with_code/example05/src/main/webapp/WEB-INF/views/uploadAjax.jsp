@@ -23,6 +23,21 @@
 				const files = inputFile[0].files;
 				
 				console.log(files);
+				
+				for (let i = 0; i < files.length; i++) {
+					formData.append("uploadFile", files[i]);
+				}
+				
+				$.ajax({
+					url: '/uploadAjaxAction',
+					processData: false,
+					contentType: false,
+					data: formData,
+					type: 'POST',
+					success: function(result) {
+						alert('Uploaded');
+					}
+				});
 			})
 		})
 	</script>
