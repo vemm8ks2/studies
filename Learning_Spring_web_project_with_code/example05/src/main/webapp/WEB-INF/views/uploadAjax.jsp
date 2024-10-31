@@ -35,6 +35,8 @@
 				return true;
 			}
 			
+			const cloneObj = $(".uploadDiv").clone();
+			
 			$("#uploadBtn").on("click", function(e) {
 				const formData = new FormData();
 				const inputFile = $("input[name='uploadFile']");
@@ -59,6 +61,8 @@
 					dataType: 'json',
 					success: function(result) {
 						console.log(result);
+						
+						$(".uploadDiv").html(cloneObj.html());
 					}
 				});
 			})
