@@ -3,6 +3,7 @@ package org.vemm8ks2.controller;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -68,7 +69,9 @@ public class UploadController {
       // IE has file path
       uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
       log.info("|| --- Only file name: " + uploadFileName);
-      
+
+      UUID uuid = UUID.randomUUID();
+      uploadFileName = uuid.toString() + "_" + uploadFileName;
       File saveFile = new File(uploadPath, uploadFileName);
       
       try {
