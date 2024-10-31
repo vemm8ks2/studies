@@ -1,31 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
-	.uploadResult {
-		width: 100%;
-		background-color: gray;
-	}
-	
-	.uploadResult ul {
-		display: flex;
-		flex-flow: row;
-		justify-content: center;
-		align-items: center;
-	}
-	
-	.uploadResult ul li {
-		list-style: none;
-		padding: 10px;
-	}
-	
-	.uploadResult ul li img {
-		width: 20px;
-	}
+.uploadResult {
+	width: 100%;
+	background-color: gray;
+}
+
+.uploadResult ul {
+	display: flex;
+	flex-flow: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.uploadResult ul li {
+	list-style: none;
+	padding: 10px;
+}
+
+.uploadResult ul li img {
+	width: 20px;
+}
 </style>
 </head>
 <body>
@@ -37,9 +37,11 @@
 		<ul></ul>
 	</div>
 	<button id='uploadBtn'>Upload</button>
-	
-	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-	
+
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+		integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+		crossorigin="anonymous"></script>
+
 	<script>
 		$(document).ready(function() {
 			const regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
@@ -63,7 +65,7 @@
 			const cloneObj = $(".uploadDiv").clone();
 			const uploadResult = $(".uploadResult ul");
 			
-			function showUploadFile(uploadResultArr) {
+			function showUploadedFile(uploadResultArr) {
 				
 				let str = '';
 				
@@ -76,7 +78,14 @@
 							</li>
 						`;
 					} else {
-						str += `<li>\${obj.filename}</li>`;
+						const fileCallPath = encodeURIComponent(`\${obj.uploadPath}/s_\${obj.uuid}_\${obj.filename}`);
+						
+						str += `
+							<li>\${obj.filename}</li>
+							<li>
+								<img src='/display?fileName=\${fileCallPath}' />
+							</li>
+						`;
 					}
 				});
 				
@@ -108,7 +117,7 @@
 					success: function(result) {
 						console.log(result);
 						
-						showUploadFile(result);
+						showUploadedFile(result);
 						$(".uploadDiv").html(cloneObj.html());
 					}
 				});
