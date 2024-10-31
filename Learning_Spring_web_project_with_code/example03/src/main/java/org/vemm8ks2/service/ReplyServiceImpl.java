@@ -1,25 +1,33 @@
 package org.vemm8ks2.service;
 
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.vemm8ks2.domain.Criteria;
 import org.vemm8ks2.domain.ReplyPageDTO;
 import org.vemm8ks2.domain.ReplyVO;
+import org.vemm8ks2.mapper.BoardMapper;
 import org.vemm8ks2.mapper.ReplyMapper;
-import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 @Service
 @Log4j
-@AllArgsConstructor
 public class ReplyServiceImpl implements ReplyService {
 
+  @Autowired
   private ReplyMapper mapper;
+  
+  @Autowired
+  private BoardMapper boardMapper;
 
+  @Transactional
   @Override
   public int register(ReplyVO vo) {
 
     log.info("register ... " + vo);
+    
+    boardMapper.updateReplyCnt(vo.getBno(), 1);
 
     return mapper.insert(vo);
   }
@@ -40,11 +48,15 @@ public class ReplyServiceImpl implements ReplyService {
     return mapper.update(vo);
   }
 
+  @Transactional
   @Override
   public int remove(Long rno) {
 
     log.info("remove ... " + rno);
-
+    
+    ReplyVO vo = mapper.read(rno);
+    boardMapper.updateReplyCnt(vo.getBno(), -1);
+    
     return mapper.delete(rno);
   }
 
