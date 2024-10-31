@@ -11,6 +11,9 @@
 	<div class='uploadDiv'>
 		<input type='file' name='uploadFile' multiple>
 	</div>
+	<div class='uploadResult'>
+		<ul></ul>
+	</div>
 	<button id='uploadBtn'>Upload</button>
 	
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -36,6 +39,18 @@
 			}
 			
 			const cloneObj = $(".uploadDiv").clone();
+			const uploadResult = $(".uploadResult ul");
+			
+			function showUploadFile(uploadResultArr) {
+				
+				let str = '';
+				
+				$(uploadResultArr).each(function(i, obj) {
+					str += `<li>\${obj.filename}</li>`;
+				});
+				
+				uploadResult.append(str);
+			}
 			
 			$("#uploadBtn").on("click", function(e) {
 				const formData = new FormData();
@@ -62,6 +77,7 @@
 					success: function(result) {
 						console.log(result);
 						
+						showUploadFile(result);
 						$(".uploadDiv").html(cloneObj.html());
 					}
 				});
