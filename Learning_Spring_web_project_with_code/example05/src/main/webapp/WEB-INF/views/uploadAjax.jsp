@@ -71,10 +71,14 @@
 				
 				$(uploadResultArr).each(function(i, obj) {
 					if (!obj.image) {
+						const fileCallPath = encodeURIComponent(`\${obj.uploadPath}/\${obj.uuid}_\${obj.filename}`);
+						
 						str += `
 							<li>
-								<img src='/resources/img/attach.png' />
-								\${obj.filename}
+								<a href='/download?fileName=\${fileCallPath}'>
+									<img src='/resources/img/attach.png' />
+									\${obj.filename}
+								</a>
 							</li>
 						`;
 					} else {
