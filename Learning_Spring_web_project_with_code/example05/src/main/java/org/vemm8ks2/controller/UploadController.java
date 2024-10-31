@@ -60,7 +60,7 @@ public class UploadController {
   @ResponseBody
   public ResponseEntity<List<AttachFileDTO>> uploadAjaxPost(MultipartFile[] uploadFile) {
 
-    List<AttachFileDTO> list = new ArrayList<AttachFileDTO>();
+    List<AttachFileDTO> list = new ArrayList<>();
     
     String uploadFolder = "C:\\upload";
     String uploadFolderPath = getFolder();
@@ -115,7 +115,7 @@ public class UploadController {
       }
     }
     
-    return new ResponseEntity<List<AttachFileDTO>>(list, HttpStatus.OK);
+    return new ResponseEntity<>(list, HttpStatus.OK);
   }
 
   private String getFolder() {
