@@ -118,13 +118,19 @@
 				$(uploadResultArr).each(function(i, obj) {
 					if (!obj.image) {
 						const fileCallPath = encodeURIComponent(`\${obj.uploadPath}/\${obj.uuid}_\${obj.filename}`);
+						const fileLink = fileCallPath.replace(new RegExp(/\\/g), "/");
 						
 						str += `
 							<li>
-								<a href='/download?fileName=\${fileCallPath}'>
-									<img src='/resources/img/attach.png' />
-									\${obj.filename}
-								</a>
+								<div>
+									<a href='/download?fileName=\${fileCallPath}'>
+										<img src='/resources/img/attach.png' />
+										\${obj.filename}
+									</a>
+									<span data-file='\${fileCallPath}' data-type='file'>
+										x
+									</span>
+								</div>
 							</li>
 						`;
 					} else {
@@ -138,6 +144,9 @@
 								<a href='javascript:showImage("\${originPath}")'>
 									<img src='/display?fileName=\${fileCallPath}' />
 								</a>
+								<span data-file='\${fileCallPath}' data-type='image'>
+									x
+								</span>
 							</li>
 						`;
 					}
@@ -175,6 +184,23 @@
 						$(".uploadDiv").html(cloneObj.html());
 					}
 				});
+			})
+			
+			$(".uploadResult").on("click", "span", function(e) {
+				const targetFile = $(this).data("file");
+				const type = $(this).data("type");
+				
+				console.log(targetFile);
+				
+				$.ajax({
+					url: '/deleteFile',
+					data: { fileName: targetFile, type },
+					dataType: 'text',
+					type: 'POST',
+					success: function(result) {
+						alert(result);
+					}
+				})
 			})
 		})
 	</script>
