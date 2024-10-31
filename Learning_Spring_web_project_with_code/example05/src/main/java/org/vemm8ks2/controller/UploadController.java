@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.vemm8ks2.domain.AttachFileDTO;
@@ -149,19 +151,38 @@ public class UploadController {
 
   @GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
   @ResponseBody
-  public ResponseEntity<Resource> downloadFile(String fileName) {
-
-    log.info("|| --- download file: " + fileName);
+  public ResponseEntity<Resource> downloadFile(@RequestHeader("User-Agent") String userAgent,
+      String fileName) {
 
     FileSystemResource resource = new FileSystemResource("C:\\upload\\" + fileName);
 
-    log.info("|| --- resource: " + resource);
+    if (!resource.exists()) {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 
     String resourceName = resource.getFilename();
 
     HttpHeaders headers = new HttpHeaders();
 
     try {
+
+      String downloadName = null;
+
+      if (userAgent.contains("Trident")) {
+
+        log.info("|| --- IE browser");
+        downloadName = URLEncoder.encode(resourceName, "UTF-8").replaceAll("\\+", " ");
+      } else if (userAgent.contains("Edge")) {
+
+        log.info("|| --- Edge browser");
+        downloadName = URLEncoder.encode(resourceName, "UTF-8");
+        log.info("|| --- Edge name: " + downloadName);
+      } else {
+
+        log.info("|| --- Chrome browser");
+        downloadName = new String(resourceName.getBytes("UTF-8"), "ISO-8859-1");
+      }
+
       headers.add("Content-Disposition",
           "attachment; filename=" + new String(resourceName.getBytes("UTF-8"), "ISO-8859-1"));
     } catch (UnsupportedEncodingException e) {
