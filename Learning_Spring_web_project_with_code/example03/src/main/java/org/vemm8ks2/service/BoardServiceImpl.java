@@ -16,79 +16,91 @@ import lombok.extern.log4j.Log4j;
 @Service
 public class BoardServiceImpl implements BoardService {
 
-    @Autowired
-	private BoardMapper mapper;
-    
-    @Autowired
-	private BoardAttachMapper attachMapper;
+  @Autowired
+  private BoardMapper mapper;
 
-    @Transactional
-	@Override
-	public void register(BoardVO board) {
+  @Autowired
+  private BoardAttachMapper attachMapper;
 
-		log.info("|| --- register: " + board);
-		
-		mapper.insertSelectKey(board);
-		
-		if (board.getAttachList() == null || board.getAttachList().size() <= 0) {
-		  return;
-		}
-		
-		board.getAttachList().forEach(attach -> {
-		  attach.setBno(board.getBno());
-		  attachMapper.insert(attach);
-		});
-	}
+  @Transactional
+  @Override
+  public void register(BoardVO board) {
 
-	@Override
-	public BoardVO get(Long bno) {
+    log.info("|| --- register: " + board);
 
-		log.info("|| --- get ...");
-		
-		return mapper.read(bno);
-	}
+    mapper.insertSelectKey(board);
 
-	@Override
-	public boolean modify(BoardVO board) {
+    if (board.getAttachList() == null || board.getAttachList().size() <= 0) {
+      return;
+    }
 
-		log.info("modify ... " + board);
-		
-		return mapper.update(board) == 1;
-	}
+    board.getAttachList().forEach(attach -> {
+      attach.setBno(board.getBno());
+      attachMapper.insert(attach);
+    });
+  }
 
-	@Transactional
-	@Override
-	public boolean remove(Long bno) {
+  @Override
+  public BoardVO get(Long bno) {
 
-		log.info("|| --- remove ... " + bno);
-		
-		attachMapper.deleteAll(bno);
-		
-		return mapper.delete(bno) == 1;
-	}
+    log.info("|| --- get ...");
 
-	@Override
-	public List<BoardVO> getList(Criteria cri) {
+    return mapper.read(bno);
+  }
 
-		log.info("getList with criteria: " + cri);
-		
-		return mapper.getListWithPaging(cri);
-	}
+  @Transactional
+  @Override
+  public boolean modify(BoardVO board) {
 
-	@Override
-	public int getTotal(Criteria cri) {
+    log.info("|| --- modify ... " + board);
 
-		log.info("get total count");
-		
-		return mapper.getTotalCount(cri);
-	}
+    attachMapper.deleteAll(board.getBno());
+
+    boolean modifyResult = mapper.update(board) == 1;
+
+    if (modifyResult && board.getAttachList() != null && board.getAttachList().size() > 0) {
+      board.getAttachList().forEach(attach -> {
+        attach.setBno(board.getBno());
+        attachMapper.insert(attach);
+      });
+    }
+
+    return modifyResult;
+  }
+
+  @Transactional
+  @Override
+  public boolean remove(Long bno) {
+
+    log.info("|| --- remove ... " + bno);
+
+    attachMapper.deleteAll(bno);
+
+    return mapper.delete(bno) == 1;
+  }
+
+  @Override
+  public List<BoardVO> getList(Criteria cri) {
+
+    log.info("|| --- getList with criteria: " + cri);
+
+    return mapper.getListWithPaging(cri);
+  }
+
+  @Override
+  public int getTotal(Criteria cri) {
+
+    log.info("|| --- get total count");
+
+    return mapper.getTotalCount(cri);
+  }
 
   @Override
   public List<BoardAttachVO> getAttachList(Long bno) {
 
     log.info("|| --- get attach list by bno: " + bno);
-    
+
     return attachMapper.findByBno(bno);
   }
-	
+
 }
