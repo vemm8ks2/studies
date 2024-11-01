@@ -186,7 +186,7 @@
 						const fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.filename);
 						
 						str += `
-							<li data-path=\${obj.uploadPath} data-uuid=\${obj.uuid} data-filename=\${obj.filename} data-type=\${obj.image}>
+							<li data-path='\${obj.uploadPath}' data-uuid='\${obj.uuid}' data-filename='\${obj.filename}' data-type='\${obj.image}'>
 								<div>
 									<span>\${obj.filename}</span>
 									<button data-file='\${fileCallPath}' data-type='image' class='btn btn-warning btn-circle'>
@@ -202,7 +202,7 @@
 						const fileLink = fileCallPath.replace(new RegExp(/\\/g), "/");
 						
 						str += `
-							<li data-path=\${obj.uploadPath} data-uuid=\${obj.uuid} data-filename=\${obj.filename} data-type=\${obj.image}>
+							<li data-path='\${obj.uploadPath}' data-uuid='\${obj.uuid}' data-filename='\${obj.filename}' data-type='\${obj.image}'>
 								<div>
 									<span>\${obj.filename}</span>
 									<button data-file='\${fileCallPath}' data-type='file' class='btn btn-warning btn-circle'>
