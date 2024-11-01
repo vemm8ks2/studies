@@ -80,11 +80,16 @@
                         <div class="p-5">
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">File Attach</h1>
-                            </div>
-						   <div class="custom-file uploadDiv">
-						     <input type="file" class="custom-file-input" id="inputGroupFile01" name="uploadFile" multiple>
-						     <label class="custom-file-label" for="inputGroupFile01">파일 선택</label>
-						   </div>
+                            </div> 
+						    <div class="custom-file uploadDiv mb-2">
+						      <input type="file" class="custom-file-input" id="inputGroupFile01" name="uploadFile" multiple>
+						      <label class="custom-file-label" for="inputGroupFile01">파일 선택</label>
+						    </div>
+                            <!--
+						    <div class="uploadDiv">
+						      <input type="file" name="uploadFile" multiple>
+						    </div>
+						    -->
                             <div class="uploadResult">
                             	<ul>
                             	</ul>
@@ -99,6 +104,105 @@
 
 	<%@include file="../includes/footer.jsp" %>
 
+	<script>
+		$(document).ready(function(e) {
+			const formObj = $("form[role='form']");
+			
+			$("button[type='submit']").on("click", function(e) {
+				e.preventDefault();
+				console.log("submit clicked");
+			})
+			
+			const regex = /(.*?)\.(exe|sh|zip|alz)$/;
+			const maxSize = 5242880; // 5MB
+			
+			function checkExtension(fileName, fileSize) {
+				if (fileSize >= maxSize) {
+					alert('파일 사이즈 초과');
+					return;
+				}
+				
+				if (regex.test(fileName)) {
+					alert('해당 종류의 파일은 업로드할 수 없습니다.')
+					return;
+				}
+				
+				return true;
+			}
+			
+			$("input[type='file']").change(function(e) {
+				const formData = new FormData();
+				const inputFile = $("input[name='uploadFile']");
+				const files = inputFile[0].files;
+				
+				for (let i = 0; i < files.length; i++) {
+					if (!checkExtension(files[i].name, files[i].size)) {
+						return;
+					}
+					
+					formData.append("uploadFile", files[i]);
+				}
+				
+				$.ajax({
+					url: "/uploadAjaxAction",
+					processData: false,
+					contentType: false,
+					data: formData,
+					type: 'POST',
+					dataType: 'json',
+					success: function(result) {
+						console.log(result);
+						showUploadResult(result); // 업로드 결과 처리 함수
+					}
+				})
+			})
+			
+			function showUploadResult(uploadResultArr) {
+				if (!uploadResultArr || uploadResultArr.length === 0) return;
+				
+				const uploadUL = $(".uploadResult ul");
+				let str = '';
+				
+				$(uploadResultArr).each(function(i, obj) {
+					// image type
+					if (obj.image) {
+						const fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.filename);
+						
+						str += `
+							<li>
+								<div>
+									<span>\${obj.filename}</span>
+									<button class='btn btn-warning btn-circle'>
+										<i class='fa fa-times'></i>
+									</button>
+									<br>
+									<img src='/display?fileName=\${fileCallPath}' />
+								</div>
+							</li>
+						`;
+					} else {
+						const fileCallPath = encodeURIComponent(obj.uploadPath + "/_" + obj.uuid + "_" + obj.filename);
+						const fileLink = fileCallPath.replace(new RegExp(/\\/g), "/");
+						
+						str += `
+							<li>
+								<div>
+									<span>\${obj.filename}</span>
+									<button class='btn btn-warning btn-circle'>
+										<i class='fa fa-times'></i>
+									</button>
+									<br>
+									<img src='/resources/img/attach.png' />
+								</div>
+							</li>
+						`;
+					}
+				});
+				
+				uploadUL.append(str);
+			}
+		})
+	</script>
 </body>
 
 </html>
