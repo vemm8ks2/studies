@@ -1,7 +1,7 @@
 package org.vemm8ks2.domain;
 
 import java.util.Date;
-
+import java.util.List;
 import lombok.Data;
 
 @Data
@@ -14,4 +14,5 @@ public class BoardVO {
 	private Date regdate;
 	private Date updatedate;
 	private int replycnt;
+    private List<BoardAttachVO> attachList;
 }
