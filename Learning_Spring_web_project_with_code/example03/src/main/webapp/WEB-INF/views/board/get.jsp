@@ -24,6 +24,58 @@
     <!-- Custom styles for this template-->
     <link href="/resources/css/sb-admin-2.min.css" rel="stylesheet">
 
+	<style type="text/css">
+		.uploadResult {
+			width: 100%;
+			background-color: gray;
+		}
+		
+		.uploadResult ul {
+			display: flex;
+			flex-flow: row;
+			justify-content: center;
+			align-items: center;
+		}
+		
+		.uploadResult ul li {
+			list-style: none;
+			padding: 10px;
+			align-content: center;
+			text-align: center;
+		}
+		
+		.uploadResult ul li img {
+			width: 100px;
+		}
+		
+		.uploadResult ul li span {
+			color: white;
+		}
+		
+		.bigPictureWrapper {
+			position: absolute;
+			display: none;
+			justify-content: center;
+			align-items: center;
+			top: 0%;
+			width: 100%;
+			height: 100%;
+			background-color: gray;
+			z-index: 100;
+			background: rgba(255, 255, 255, 0.5);
+		}
+		
+		.bigPicture {
+			position: relative;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		
+		.bigPicture img {
+			width: 600px;
+		}
+	</style>
 </head>
 
 <body class="bg-gradient-primary">
@@ -88,6 +140,25 @@
             </div>
         </div>
         
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <div class='row'>
+                	<div class='col-lg-12'>
+                		<div class='p-5'>
+                			<div class='card-title'>
+                				Files
+                			</div>
+                			<div class='uploadResult'>
+                				<ul>
+                				</ul>
+                			</div>
+                		</div>
+                	</div>
+                </div>
+               	<!-- ./ end row -->
+            </div>
+        </div>
+        
     	<div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
                 <div class='row'>
@@ -113,6 +184,11 @@
         </div>
     </div>
     <!-- /.container-fluid -->
+                			
+	<div class="bigPictureWrapper">
+		<div class="bigPicture">
+		</div>
+	</div>
     
     <!-- Modal -->
 	<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -152,6 +228,15 @@
 	
 	<script type="text/javascript" src="/resources/js/reply.js"></script>
 	<script type="text/javascript">
+		$(document).ready(function() {
+			(function() {
+				const bno = '<c:out value="${board.bno}" />';
+				
+				$.getJSON("/board/getAttachList", { bno }, function(arr) {
+					console.log(arr);
+				});
+			})();
+		})
 	</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
