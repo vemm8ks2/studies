@@ -43,7 +43,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public BoardVO get(Long bno) {
 
-		log.info("get ...");
+		log.info("|| --- get ...");
 		
 		return mapper.read(bno);
 	}
@@ -56,10 +56,13 @@ public class BoardServiceImpl implements BoardService {
 		return mapper.update(board) == 1;
 	}
 
+	@Transactional
 	@Override
 	public boolean remove(Long bno) {
 
-		log.info("remove ... " + bno);
+		log.info("|| --- remove ... " + bno);
+		
+		attachMapper.deleteAll(bno);
 		
 		return mapper.delete(bno) == 1;
 	}
