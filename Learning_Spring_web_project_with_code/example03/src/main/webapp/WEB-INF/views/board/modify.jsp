@@ -183,6 +183,95 @@
 				targetLi.remove();	
 			}
 		});
+		
+		const regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
+		const maxSize = 5242880; // 5MB
+
+		function checkExtension(fileName, fileSize) {
+			if (fileSize >= maxSize) {
+				alert('파일 사이즈 초과');
+				return;
+			}
+			
+			if (regex.test(fileName)) {
+				alert('해당 종류의 파일은 업로드할 수 없습니다.')
+				return;
+			}
+			
+			return true;
+		}
+		
+		$("input[type='file']").change(function(e) {
+			const formData = new FormData();
+			const inputFile = $("input[name='uploadFile']");
+			const files = inputFile[0].files;
+			
+			for (let i = 0; i < files.length; i++) {
+				if (!checkExtension(files[i].name, files[i].size)) {
+					return;
+				}
+				
+				formData.append("uploadFile", files[i]);
+			}
+			
+			$.ajax({
+				url: "/uploadAjaxAction",
+				processData: false,
+				contentType: false,
+				data: formData,
+				type: 'POST',
+				dataType: 'json',
+				success: function(result) {
+					console.log(result);
+					showUploadResult(result); // 업로드 결과 처리 함수
+				}
+			})
+		})
+		
+		function showUploadResult(uploadResultArr) {
+			if (!uploadResultArr || uploadResultArr.length === 0) return;
+			
+			const uploadUL = $(".uploadResult ul");
+			let str = '';
+			
+			$(uploadResultArr).each(function(i, obj) {
+				// image type
+				if (obj.image) {
+					const fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.filename);
+					
+					str += `
+						<li data-path='\${obj.uploadPath}' data-uuid='\${obj.uuid}' data-filename='\${obj.filename}' data-type='\${obj.image}'>
+							<div>
+								<span>\${obj.filename}</span>
+								<button data-file='\${fileCallPath}' data-type='image' class='btn btn-warning btn-circle'>
+									<i class='fa fa-times'></i>
+								</button>
+								<br>
+								<img src='/display?fileName=\${fileCallPath}' />
+							</div>
+						</li>
+					`;
+				} else {
+					const fileCallPath = encodeURIComponent(obj.uploadPath + "/_" + obj.uuid + "_" + obj.filename);
+					const fileLink = fileCallPath.replace(new RegExp(/\\/g), "/");
+					
+					str += `
+						<li data-path='\${obj.uploadPath}' data-uuid='\${obj.uuid}' data-filename='\${obj.filename}' data-type='\${obj.image}'>
+							<div>
+								<span>\${obj.filename}</span>
+								<button data-file='\${fileCallPath}' data-type='file' class='btn btn-warning btn-circle'>
+									<i class='fa fa-times'></i>
+								</button>
+								<br>
+								<img src='/resources/img/attach.png' />
+							</div>
+						</li>
+					`;
+				}
+			});
+			
+			uploadUL.append(str);
+		}
 	</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
