@@ -348,6 +348,25 @@
 					formObj.append(amountTag);
 					formObj.append(keywordTag);
 					formObj.append(typeTag);
+				} else if (operation === 'modify') {
+					console.log('submit clicked');
+					
+					let str = '';
+					
+					$('.uploadResult ul li').each(function(i, obj) {
+						const jobj = $(obj);
+						
+						console.dir(jobj);
+						
+						str += `
+							<input type='hidden' name='attachList[\${i}].fileName' value='\${jobj.data("filename")}' />
+							<input type='hidden' name='attachList[\${i}].uuid' value='\${jobj.data("uuid")}' />
+							<input type='hidden' name='attachList[\${i}].uploadPath' value='\${jobj.data("path")}' />
+							<input type='hidden' name='attachList[\${i}].fileType' value='\${jobj.data("type")}' />
+						`;
+					});
+					
+					formObj.append(str).submit();
 				}
 				
 				formObj.submit();
