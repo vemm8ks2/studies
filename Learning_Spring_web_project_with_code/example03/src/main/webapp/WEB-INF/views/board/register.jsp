@@ -110,8 +110,25 @@
 			
 			$("button[type='submit']").on("click", function(e) {
 				e.preventDefault();
+				
 				console.log("submit clicked");
-			})
+				
+				let str = '';
+				
+				$(".uploadResult ul li").each(function(i, obj) {
+					const jobj = $(obj);
+					console.dir(jobj);
+					
+					str += `
+						<input type='hidden' name='attachList[\${i}].filename' value='\${jobj.data("filename")}' />
+						<input type='hidden' name='attachList[\${i}].uuid' value='\${jobj.data("uuid")}' />
+						<input type='hidden' name='attachList[\${i}].uploadPath' value='\${jobj.data("path")}' />
+						<input type='hidden' name='attachList[\${i}].fileType' value='\${jobj.data("type")}' />
+					`;
+				})
+				
+				formObj.append(str).submit();
+			});
 			
 			const regex = /(.*?)\.(exe|sh|zip|alz)$/;
 			const maxSize = 5242880; // 5MB
@@ -169,7 +186,7 @@
 						const fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.filename);
 						
 						str += `
-							<li>
+							<li data-path=\${obj.uploadPath} data-uuid=\${obj.uuid} data-filename=\${obj.filename} data-type=\${obj.image}>
 								<div>
 									<span>\${obj.filename}</span>
 									<button data-file='\${fileCallPath}' data-type='image' class='btn btn-warning btn-circle'>
@@ -185,7 +202,7 @@
 						const fileLink = fileCallPath.replace(new RegExp(/\\/g), "/");
 						
 						str += `
-							<li>
+							<li data-path=\${obj.uploadPath} data-uuid=\${obj.uuid} data-filename=\${obj.filename} data-type=\${obj.image}>
 								<div>
 									<span>\${obj.filename}</span>
 									<button data-file='\${fileCallPath}' data-type='file' class='btn btn-warning btn-circle'>
