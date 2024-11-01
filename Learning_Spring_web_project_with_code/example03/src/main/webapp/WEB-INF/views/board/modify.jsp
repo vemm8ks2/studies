@@ -175,6 +175,16 @@
 	<%@include file="../includes/footer.jsp" %>
 	
 	<script type="text/javascript">
+		$('.uploadResult').on('click', 'button', function(e) {
+			console.log('delete file');
+			
+			if (confirm('Remove this file?')) {
+				const targetLi = $(this).closest('li');
+				targetLi.remove();	
+			}
+		});
+	</script>
+	<script type="text/javascript">
 		$(document).ready(function() {
 			(function() {
 				const bno = '<c:out value="${board.bno}" />';
