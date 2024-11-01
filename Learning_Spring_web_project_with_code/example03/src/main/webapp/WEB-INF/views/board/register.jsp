@@ -172,7 +172,7 @@
 							<li>
 								<div>
 									<span>\${obj.filename}</span>
-									<button class='btn btn-warning btn-circle'>
+									<button data-file='\${fileCallPath}' data-type='image' class='btn btn-warning btn-circle'>
 										<i class='fa fa-times'></i>
 									</button>
 									<br>
@@ -188,7 +188,7 @@
 							<li>
 								<div>
 									<span>\${obj.filename}</span>
-									<button class='btn btn-warning btn-circle'>
+									<button data-file='\${fileCallPath}' data-type='file' class='btn btn-warning btn-circle'>
 										<i class='fa fa-times'></i>
 									</button>
 									<br>
@@ -201,6 +201,25 @@
 				
 				uploadUL.append(str);
 			}
+			
+			$(".uploadResult").on("click", "button", function(e) {
+				console.log("delete file");
+				
+				const targetFile = $(this).data("file");
+				const type = $(this).data("type");
+				const targetLi = $(this).closest("li");
+				
+				$.ajax({
+					url: '/deleteFile',
+					data: { fileName: targetFile, type },
+					dataType: 'text',
+					type: 'POST',
+					success: function(result) {
+						alert(result);
+						targetLi.remove();
+					}
+				})
+			});
 		})
 	</script>
 </body>
