@@ -28,9 +28,8 @@
 
 	<%@include file="../includes/header.jsp" %>
 
-	<!-- Begin Page Content -->
+	<!-- Begin Board Register Content -->
     <div class="container-fluid">
-
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
@@ -67,7 +66,34 @@
                 </div>
             </div>
         </div>
-
+    </div>
+    <!-- /.container-fluid -->
+    
+    
+	<!-- Begin File Attach Content -->
+    <div class="container-fluid">
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">File Attach</h1>
+                            </div>
+						   <div class="custom-file uploadDiv">
+						     <input type="file" class="custom-file-input" id="inputGroupFile01" name="uploadFile" multiple>
+						     <label class="custom-file-label" for="inputGroupFile01">파일 선택</label>
+						   </div>
+                            <div class="uploadResult">
+                            	<ul>
+                            	</ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- /.container-fluid -->
 
