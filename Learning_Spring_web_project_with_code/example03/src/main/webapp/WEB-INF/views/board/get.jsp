@@ -227,6 +227,32 @@
 
 	<script type="text/javascript" src="/resources/js/reply.js"></script>
 	<script type="text/javascript">
+		$('.uploadResult').on('click', 'li', function(e) {
+			console.log('view image');
+			
+			const liObj = $(this);
+			const path = encodeURIComponent(`\${liObj.data('path')}/\${liObj.data('uuid')}_\${liObj.data('filename')}`);
+			
+			if (liObj.data('type')) {
+				showImage(path.replace(new RegExp(/\\/g), '/'));
+			} else {
+				// download
+				self.location = `/download?fileName=\${path}`;
+			}
+			
+			function showImage(fileCallPath) {
+				alert(fileCallPath);
+				
+				$('.bigPictureWrapper').css('display', 'flex').show();
+				
+				$('.bigPicture')
+					.html(`<img src='/display?fileName=\${fileCallPath}' />`)
+					.animate({ width: '100%', height: '100%' }, 1000);
+			}
+			
+		})
+	</script>
+	<script type="text/javascript">
 		$(document).ready(function() {
 			(function() {
 				const bno = '<c:out value="${board.bno}" />';
