@@ -25,6 +25,59 @@
 
     <!-- Custom styles for this template-->
     <link href="/resources/css/sb-admin-2.min.css" rel="stylesheet">
+    
+	<style type="text/css">
+	.uploadResult {
+		width: 100%;
+		background-color: gray;
+	}
+	
+	.uploadResult ul {
+		display: flex;
+		flex-flow: row;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.uploadResult ul li {
+		list-style: none;
+		padding: 10px;
+		align-content: center;
+		text-align: center;
+	}
+	
+	.uploadResult ul li img {
+		width: 100px;
+	}
+	
+	.uploadResult ul li span {
+		color: white;
+	}
+	
+	.bigPictureWrapper {
+		position: absolute;
+		display: none;
+		justify-content: center;
+		align-items: center;
+		top: 0%;
+		width: 100%;
+		height: 100%;
+		background-color: gray;
+		z-index: 100;
+		background: rgba(255, 255, 255, 0.5);
+	}
+	
+	.bigPicture {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.bigPicture img {
+		width: 600px;
+	}
+	</style>
 
 </head>
 
@@ -34,7 +87,6 @@
 
 	<!-- Begin Page Content -->
     <div class="container-fluid">
-
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
@@ -93,12 +145,83 @@
                 </div>
             </div>
         </div>
-
+        
+		<div class="card o-hidden border-0 shadow-lg my-5">
+			<div class="card-body p-0">
+				<div class='row'>
+					<div class='col-lg-12'>
+						<div class='p-5'>
+							<div class='card-title'>Files</div>
+							<div class='uploadDiv'>
+								<input type='file' name="uploadFile" multiple>
+							</div>
+							<div class='uploadResult mt-2'>
+								<ul>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- ./ end row -->
+			</div>
+		</div>
     </div>
     <!-- /.container-fluid -->
 
+	<div class="bigPictureWrapper">
+		<div class="bigPicture"></div>
+	</div>
+
 	<%@include file="../includes/footer.jsp" %>
 	
+	<script type="text/javascript">
+		$(document).ready(function() {
+			(function() {
+				const bno = '<c:out value="${board.bno}" />';
+				
+				$.getJSON("/board/getAttachList", { bno }, function(arr) {
+					console.log(arr);
+					
+					let str = '';
+					
+					$(arr).each(function(i, attach) {
+						// image type
+						if (attach.fileType) {
+							const fileCallPath = encodeURIComponent(attach.uploadPath + "/s_" + attach.uuid + "_" + attach.fileName);
+							
+							str += `
+								<li data-path='\${attach.uploadPath}' data-uuid='\${attach.uuid}' data-filename='\${attach.fileName}' data-type='\${attach.fileType}'>
+									<div>
+										<span>\${attach.fileName}</span>
+										<button data-file='\${fileCallPath}' data-type='image' class='btn btn-warning btn-circle'>
+											<i class='fa fa-times'></i>
+										</button>
+										<br>
+										<img src='/display?fileName=\${fileCallPath}' />
+									</div>
+								</li>
+							`;
+						} else {
+							const fileCallPath = encodeURIComponent(attach.uploadPath + "/" + attach.uuid + "_" + attach.fileName);
+							
+							str += `
+								<li data-path='\${attach.uploadPath}' data-uuid='\${attach.uuid}' data-filename='\${attach.fileName}' data-type='\${attach.fileType}'>
+									<span>\${attach.fileName}</span>
+									<button data-file='\${fileCallPath}' data-type='file' class='btn btn-warning btn-circle'>
+										<i class='fa fa-times'></i>
+									</button>
+									<br>
+									<img src='/resources/img/attach.png' />
+								</li>
+							`;
+						}
+					});
+					
+					$(".uploadResult ul").html(str);
+				});
+			})();
+		})
+	</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			const formObj = $("form");
