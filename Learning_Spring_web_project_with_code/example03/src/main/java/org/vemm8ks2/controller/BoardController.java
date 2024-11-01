@@ -1,5 +1,8 @@
 package org.vemm8ks2.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,11 +35,11 @@ public class BoardController {
   @GetMapping("/list")
   public void list(Criteria cri, Model model) {
 
-    log.info("list: " + cri);
+    log.info("|| --- list: " + cri);
 
     int total = service.getTotal(cri);
 
-    log.info("total: " + total);
+    log.info("|| --- total: " + total);
 
     model.addAttribute("list", service.getList(cri));
     model.addAttribute("pageMaker", new PageDTO(cri, total));
@@ -69,7 +72,7 @@ public class BoardController {
   @GetMapping({"/get", "/modify"})
   public void get(@RequestParam("bno") Long bno, @ModelAttribute("cri") Criteria cri, Model model) {
 
-    log.info("/get or /modify");
+    log.info("|| --- /get or /modify");
 
     model.addAttribute("board", service.get(bno));
   }
@@ -78,7 +81,7 @@ public class BoardController {
   public String modify(BoardVO board, @ModelAttribute("cri") Criteria cri,
       RedirectAttributes attr) {
 
-    log.info("modify: " + board);
+    log.info("|| --- modify: " + board);
 
     if (service.modify(board)) {
       attr.addFlashAttribute("result", "success");
@@ -91,9 +94,13 @@ public class BoardController {
   public String remove(@RequestParam("bno") Long bno, @ModelAttribute("cri") Criteria cri,
       RedirectAttributes attr) {
 
-    log.info("remove ... " + bno);
+    log.info("|| --- remove ... " + bno);
+    
+    List<BoardAttachVO> attachList = service.getAttachList(bno);
 
     if (service.remove(bno)) {
+      // delete Attach Files
+      deleteFiles(attachList);
       attr.addFlashAttribute("result", "success");
     }
 
@@ -106,5 +113,33 @@ public class BoardController {
     log.info("|| --- getAttachList " + bno);
 
     return new ResponseEntity<>(service.getAttachList(bno), HttpStatus.OK);
+  }
+
+  private void deleteFiles(List<BoardAttachVO> attachList) {
+
+    if (attachList == null || attachList.size() == 0) {
+      return;
+    }
+
+    log.info("|| --- delete attach files ...");
+    log.info("|| --- " + attachList);
+
+    attachList.forEach(attach -> {
+      try {
+        Path file = Paths.get("C:\\upload\\" + attach.getUploadPath() + "\\" + attach.getUuid()
+            + "_" + attach.getFileName());
+
+        Files.deleteIfExists(file);
+
+        if (Files.probeContentType(file).startsWith("image")) {
+          Path thumbnail = Paths.get("C:\\upload\\" + attach.getUploadPath() + "\\s_"
+              + attach.getUuid() + "_" + attach.getFileName());
+
+          Files.delete(thumbnail);
+        }
+      } catch (Exception e) {
+        log.error("|| --- delete file error: " + e.getMessage());
+      }
+    });
   }
 }
