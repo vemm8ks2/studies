@@ -1,29 +1,42 @@
 package org.vemm8ks2.service;
 
 import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.vemm8ks2.domain.BoardVO;
 import org.vemm8ks2.domain.Criteria;
+import org.vemm8ks2.mapper.BoardAttachMapper;
 import org.vemm8ks2.mapper.BoardMapper;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 @Log4j
 @Service
-@AllArgsConstructor
 public class BoardServiceImpl implements BoardService {
 
-	// spring 4.3 이상에서 자동 처리
+    @Autowired
 	private BoardMapper mapper;
+    
+    @Autowired
+	private BoardAttachMapper attachMapper;
 
+    @Transactional
 	@Override
 	public void register(BoardVO board) {
 
-		log.info("register: " + board);
+		log.info("|| --- register: " + board);
 		
 		mapper.insertSelectKey(board);
+		
+		if (board.getAttachList() == null || board.getAttachList().size() <= 0) {
+		  return;
+		}
+		
+		board.getAttachList().forEach(attach -> {
+		  attach.setBno(board.getBno());
+		  attachMapper.insert(attach);
+		});
 	}
 
 	@Override
