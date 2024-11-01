@@ -1,5 +1,8 @@
 package org.vemm8ks2.domain;
 
+import lombok.Data;
+
+@Data
 public class BoardAttachVO {
 
   private String uuid;

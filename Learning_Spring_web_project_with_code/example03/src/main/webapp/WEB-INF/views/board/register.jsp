@@ -120,7 +120,7 @@
 					console.dir(jobj);
 					
 					str += `
-						<input type='hidden' name='attachList[\${i}].filename' value='\${jobj.data("filename")}' />
+						<input type='hidden' name='attachList[\${i}].fileName' value='\${jobj.data("filename")}' />
 						<input type='hidden' name='attachList[\${i}].uuid' value='\${jobj.data("uuid")}' />
 						<input type='hidden' name='attachList[\${i}].uploadPath' value='\${jobj.data("path")}' />
 						<input type='hidden' name='attachList[\${i}].fileType' value='\${jobj.data("type")}' />
