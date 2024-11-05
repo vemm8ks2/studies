@@ -1,4 +1,4 @@
-package com.vemm8ks2.sbb;
+package com.vemm8ks2.sbb.question;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

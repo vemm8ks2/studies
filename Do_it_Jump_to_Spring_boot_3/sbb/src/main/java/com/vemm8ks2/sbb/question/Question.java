@@ -1,8 +1,8 @@
-package com.vemm8ks2.sbb;
+package com.vemm8ks2.sbb.question;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+import com.vemm8ks2.sbb.answer.Answer;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
