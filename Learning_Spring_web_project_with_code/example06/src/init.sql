@@ -103,3 +103,19 @@ INSERT INTO authorities(username, authority) VALUES ('admin00', 'ROLE_MANAGER');
 INSERT INTO authorities(username, authority) VALUES ('admin00', 'ROLE_ADMIN');
 
 COMMIT;
+
+// 32.2 기존의 테이블을 이용하는 경우(일반적인 회원 테이블과 권한 테이블)
+CREATE TABLE tbl_member(
+	userid VARCHAR2(50) NOT NULL PRIMARY KEY,
+	userpw VARCHAR2(100) NOT NULL,
+	username VARCHAR2(100) NOT NULL,
+	regdate DATE DEFAULT sysdate,
+	updatedate DATE DEFAULT sysdate,
+	enabled CHAR(1) DEFAULT '1'
+);
+
+CREATE TABLE tbl_member_auth (
+	userid VARCHAR2(50) NOT NULL,
+	auth VARCHAR2(50) NOT NULL,
+	CONSTRAINT fk_member_auth FOREIGN KEY(userid) REFERENCES tbl_member(userid)
+);
