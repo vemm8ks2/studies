@@ -2,12 +2,14 @@ package com.vemm8ks2.sbb.answer;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.vemm8ks2.sbb.question.Question;
 import com.vemm8ks2.sbb.question.QuestionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/answer")
@@ -20,10 +22,16 @@ public class AnswerController {
 
   @PostMapping("/create/{id}")
   public String createAnswer(Model model, @PathVariable("id") Integer id,
-      @RequestParam(value = "content") String content) {
+      @Valid AnswerForm answerForm, BindingResult bindingResult) {
     Question question = questionService.getQuestion(id);
-    answerService.create(question, content);
-    // TODO: 답변 저장
+    
+    if (bindingResult.hasErrors()) {
+      model.addAttribute("question", question);
+      return "question_detail";
+    }
+    
+    answerService.create(question, answerForm.getContent());
+    
     return String.format("redirect:/question/detail/%s", id);
   }
 }

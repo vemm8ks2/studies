@@ -30,8 +30,9 @@
 		<!-- 답변 반복 끝 -->
 	
 		<!-- 답변 작성 -->	
-		<form th:action="@{|/answer/create/${question.id}|}" method="post">
-			<textarea name="content" id="content" rows="10" class="form-control"></textarea>
+		<form th:action="@{|/answer/create/${question.id}|}" th:object="${answerForm}" method="post">
+			<div th:replace="~{form_errors :: formErrorsFragment}"></div>
+			<textarea th:field="*{content}" rows="10" class="form-control"></textarea>
 			<button class="btn btn-primary my-2">답변 등록</button>
 		</form>
 	</div>
