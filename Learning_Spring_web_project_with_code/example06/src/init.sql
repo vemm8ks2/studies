@@ -119,3 +119,11 @@ CREATE TABLE tbl_member_auth (
 	auth VARCHAR2(50) NOT NULL,
 	CONSTRAINT fk_member_auth FOREIGN KEY(userid) REFERENCES tbl_member(userid)
 );
+
+// 35.1 데이터베이스를 이용하는 자동 로그인
+CREATE TABLE persistent_logins (
+	username VARCHAR2(64) NOT NULL,
+	series VARCHAR2(64) PRIMARY KEY,
+	token VARCHAR2(64) NOT NULL,
+	last_used TIMESTAMP NOT NULL
+);
