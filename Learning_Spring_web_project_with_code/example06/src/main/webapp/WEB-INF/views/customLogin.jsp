@@ -21,6 +21,9 @@
 			<input type="password" name="password" value="admin">
 		</div>
 		<div>
+			<input type="checkbox" name="remember-me"> Remember Me
+		</div>
+		<div>
 			<button>로그인</button>
 		</div>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
