@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 	
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -115,9 +117,14 @@
 									value='<c:out value="${board.writer}" />' readonly="readonly" />
 							</div>
 							<div class="d-flex justify-content-center">
-								<button data-oper="modify"
-									onclick="location.href='/board/modify?bno=<c:out value="${board.bno}" />'"
-									class="btn btn-default">Modify</button>
+								<sec:authentication property="principal" var="pinfo"/>
+								<sec:authorize access="isAuthenticated()">
+									<c:if test="${pinfo.username eq board.writer}">
+									<button data-oper="modify"
+										onclick="location.href='/board/modify?bno=<c:out value="${board.bno}" />'"
+										class="btn btn-default">Modify</button>
+									</c:if>
+								</sec:authorize>
 								<button data-oper="list" onclick="location.href='/board/list'"
 									class="btn btn-default mx-2">List</button>
 
@@ -167,7 +174,6 @@
 								<p>
 									<i class='fa fa-comments fa-fw'></i> Reply
 								</p>
-								<sec:
 								<button id='addReplyBtn'
 									class="btn btn-primary btn-xs pull-right">New Reply</button>
 							</div>
