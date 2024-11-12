@@ -45,6 +45,7 @@
                                 <h1 class="h4 text-gray-900 mb-4">Board Register</h1>
                             </div>
                             <form role="form" action="/board/register" method="post">
+                            	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                 <div class="form-group">
                                 	<label>Title</label>
                                 	<input class="form-control" name="title" />
