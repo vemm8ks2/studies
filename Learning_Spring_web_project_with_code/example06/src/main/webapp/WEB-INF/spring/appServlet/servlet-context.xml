@@ -26,5 +26,7 @@
 	<context:component-scan base-package="org.vemm8ks2.controller" />
 	<security:global-method-security pre-post-annotations="enabled" secured-annotations="enabled" />
 	
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+	</beans:bean>
 	
 </beans:beans>
