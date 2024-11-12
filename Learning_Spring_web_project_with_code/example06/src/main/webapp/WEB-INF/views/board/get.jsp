@@ -174,8 +174,10 @@
 								<p>
 									<i class='fa fa-comments fa-fw'></i> Reply
 								</p>
+								<sec:authorize access="isAuthenticated()">
 								<button id='addReplyBtn'
 									class="btn btn-primary btn-xs pull-right">New Reply</button>
+								</sec:authorize>
 							</div>
 
 							<div class="chat"></div>
