@@ -153,6 +153,9 @@
 				return true;
 			}
 			
+			const csrfHeaderName = "${_csrf.headerName}";
+			const csrfTokenValue = "${_csrf.token}";
+			
 			$("input[type='file']").change(function(e) {
 				const formData = new FormData();
 				const inputFile = $("input[name='uploadFile']");
@@ -167,9 +170,12 @@
 				}
 				
 				$.ajax({
-					url: "/uploadAjaxAction",
+					url: '/uploadAjaxAction',
 					processData: false,
 					contentType: false,
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+					},
 					data: formData,
 					type: 'POST',
 					dataType: 'json',
@@ -177,7 +183,7 @@
 						console.log(result);
 						showUploadResult(result); // 업로드 결과 처리 함수
 					}
-				})
+				});
 			})
 			
 			function showUploadResult(uploadResultArr) {
@@ -235,6 +241,9 @@
 				$.ajax({
 					url: '/deleteFile',
 					data: { fileName: targetFile, type },
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+					},
 					dataType: 'text',
 					type: 'POST',
 					success: function(result) {
