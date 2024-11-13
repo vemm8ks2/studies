@@ -208,6 +208,9 @@
 			return true;
 		}
 		
+		const csrfHeaderName = "${_csrf.headerName}";
+		const cstfTokenValue = "${_csrf.token}";
+		
 		$("input[type='file']").change(function(e) {
 			const formData = new FormData();
 			const inputFile = $("input[name='uploadFile']");
@@ -227,6 +230,9 @@
 				contentType: false,
 				data: formData,
 				type: 'POST',
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+				},
 				dataType: 'json',
 				success: function(result) {
 					console.log(result);
