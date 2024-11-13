@@ -2,6 +2,7 @@ package com.vemm8ks2.sbb.answer;
 
 import java.time.LocalDateTime;
 import com.vemm8ks2.sbb.question.Question;
+import com.vemm8ks2.sbb.user.SiteUser;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,4 +28,7 @@ public class Answer {
 	
 	@ManyToOne
 	private Question question;
+	
+	@ManyToOne
+	private SiteUser author;
 }
