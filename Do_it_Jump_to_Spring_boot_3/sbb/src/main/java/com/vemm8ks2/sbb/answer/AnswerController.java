@@ -31,6 +31,7 @@ public class AnswerController {
   @PostMapping("/create/{id}")
   public String createAnswer(Model model, @PathVariable("id") Integer id,
       @Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal) {
+
     Question question = questionService.getQuestion(id);
     SiteUser siteUser = userService.getUser(principal.getName());
 
@@ -39,9 +40,10 @@ public class AnswerController {
       return "question_detail";
     }
 
-    answerService.create(question, answerForm.getContent(), siteUser);
+    Answer answer = answerService.create(question, answerForm.getContent(), siteUser);
 
-    return String.format("redirect:/question/detail/%s", id);
+    return String.format("redirect:/question/detail/%s#answer_%s", answer.getQuestion().getId(),
+        answer.getId());
   }
 
   @PreAuthorize("isAuthenticated()")
@@ -77,7 +79,8 @@ public class AnswerController {
 
     answerService.modify(answer, answerForm.getContent());
 
-    return String.format("redirect:/question/detail/%s", answer.getQuestion().getId());
+    return String.format("redirect:/question/detail/%s#answer_%s", answer.getQuestion().getId(),
+        answer.getId());
   }
 
   @PreAuthorize("isAuthenticated()")
@@ -104,6 +107,7 @@ public class AnswerController {
 
     answerService.vote(answer, siteUser);
 
-    return String.format("redirect:/question/detail/%s", answer.getQuestion().getId());
+    return String.format("redirect:/question/detail/%s#answer_%s", answer.getQuestion().getId(),
+        answer.getId());
   }
 }
