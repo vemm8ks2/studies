@@ -3,6 +3,7 @@ package org.vemm8ks2.config;
 import javax.sql.DataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @ComponentScan(basePackages = {"org.vemm8ks2.sample"})
+@MapperScan(basePackages = {"org.vemm8ks2.mapper"})
 public class RootConfig {
 
   @Bean
