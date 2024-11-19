@@ -1,5 +1,16 @@
 <html layout:decorate="~{layout}">
 	<div layout:fragment="content" class="container my-3">
+		<div class="row my-3">
+			<div class="col-6">
+				<a th:href="@{/question/create}" class="btn btn-primary">질문 등록하기</a>
+			</div>
+			<div class="col-6">
+				<div class="input-group">
+					<input id="search_kw" class="form-control" th:value="${kw}">
+					<button id="btn_search" class="btn btn-outline-secondary">찾기</button>
+				</div>
+			</div>
+		</div>
 		<table class="table">
 			<thead class="table-dark">
 				<tr class="text-center">
@@ -43,7 +54,7 @@
 		<div th:if="${!paging.isEmpty()}">
 			<ul class="pagination justify-content-center">
 				<li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-					<a class="page-link" th:href="@{|?page=${paging.number - 1}|}">
+					<a class="page-link" href="javascript:void(0)" th:data-page="${paging.number - 1}">
 						<span>이전</span>
 					</a>
 				</li>
@@ -53,10 +64,10 @@
 					th:if="${page >= paging.number - 5 and page <= paging.number + 5}" 
 					class="page-item"
 				>
-					<a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+					<a th:text="${page}" class="page-link" href="javascript:void(0)" th:data-page="${page}"></a>
 				</li>
 				<li class="page-item" th:classappend="${!paging.hasNext} ? disabled">
-					<a class="page-link" th:href="@{|?page=${paging.number + 1}|}">
+					<a class="page-link" href="javascript:void(0)" th:data-page="${paging.number + 1}">
 						<span>다음</span>
 					</a>
 				</li>
@@ -64,6 +75,28 @@
 		</div>
 		<!-- 페이징 처리 끝 -->
 		
-		<a th:href="@{/question/create}" class="btn btn-primary">질문 등록하기</a>
+		<form th:action="@{/question/list}" method="get" id="searchForm">
+			<input type="hidden" id="kw" name="kw" th:value="${kw}">
+			<input type="hidden" id="page" name="page" th:value="${paging.number}">
+		</form>
 	</div>
+	
+	<script layout:fragment="script" type="text/javascript">
+		const pageElements = document.querySelectorAll('a.page-link');
+		
+		Array.from(pageElements).forEach(el => {
+			el.addEventListener('click', () => {
+				document.querySelector('#page').value = el.dataset.page;
+				document.querySelector('#searchForm').submit();
+			});
+		});
+		
+		const btnSearch = document.querySelector('#btn_search');
+		
+		btnSearch.addEventListener('click', () => {
+			document.querySelector('#kw').value = document.querySelector('#search_kw').value;
+			document.querySelector('#page').value = 0; // 검색 버튼을 클릭할 경우 0페이지부터 조회한다.
+			document.querySelector('#searchForm').submit();
+		})
+	</script>
 </html>
