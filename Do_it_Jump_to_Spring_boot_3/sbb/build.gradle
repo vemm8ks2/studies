@@ -8,6 +8,7 @@ group = 'com.vemm8ks2'
 version = '0.0.1-SNAPSHOT'
 
 java {
+	sourceCompatibility = '19'
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(21)
 	}
